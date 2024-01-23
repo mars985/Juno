@@ -16,16 +16,18 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        // colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
+        primarySwatch: Colors.deepPurple
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      // home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: HomePage(),
       routes: {
         '/homepage': (context) => HomePage(),
         '/secondpage': (context) => SecondPage(),
       },
     );
-  }
+  }   
 }
 
 class MyHomePage extends StatefulWidget {
@@ -63,25 +65,10 @@ class _MyHomePageState extends State<MyHomePage> {
         children: [
           BoxButtonHome(),
           BoxButton2(),
+
         ],
       ),
 
-      // body: Padding(
-      //   padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
-      //   child: Column(
-      //     mainAxisAlignment: MainAxisAlignment.start,
-      //     children: <Widget>[
-      //       const Transaction(),
-      //       const Text(
-      //         '*********Text???*********',
-      //       ),
-      //       Text(
-      //         'Text!!!',
-      //         style: Theme.of(context).textTheme.headlineMedium,
-      //       ),
-      //     ],
-      //   ),
-      // ),
       floatingActionButton: FloatingActionButton(
         onPressed: _doNothing,
         tooltip: 'Add transaction',
@@ -103,8 +90,8 @@ class BoxButton2 extends StatelessWidget {
         Navigator.pushNamed(context, '/secondpage');
       },
       child: Container(
-        height: 500,
-        width: 500,
+        height: 300,
+        width: 300,
         // padding: EdgeInsets.all(20),
         decoration: BoxDecoration(
           color: Colors.indigo,
@@ -136,8 +123,8 @@ class BoxButtonHome extends StatelessWidget {
         Navigator.pushNamed(context, '/homepage');
       },
       child: Container(
-        height: 500,
-        width: 500,
+        height: 300,
+        width: 300,
         decoration: BoxDecoration(
           color: Colors.amber,
           borderRadius: BorderRadius.circular(20),

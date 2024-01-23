@@ -9,6 +9,9 @@ class SecondPage extends StatefulWidget {
 
 class _SecondPageState extends State<SecondPage>
     with SingleTickerProviderStateMixin {
+  var _textVar = 0;
+  var _iconVar = Icons.plus_one;
+
   late AnimationController _controller;
 
   @override
@@ -27,6 +30,32 @@ class _SecondPageState extends State<SecondPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Second Page!?")),
+      body: Center(
+        child: Column(
+          children: [
+            Text("wazzzzuuuuuuuuuppp"),
+            Text(_textVar.toString()),
+            ElevatedButton(
+              onPressed: incrementerOfNumbers,
+              onHover: (value) {
+                setState(() {
+                  // _iconVar = Icons.minimize_outlined;
+                _iconVar = Icons.maximize_outlined;
+                });
+              },
+              onFocusChange: (value) {
+              },
+              child: Icon(_iconVar),
+            ),
+          ],
+        ),
+      ),
     );
+  }
+
+  void incrementerOfNumbers() {
+    setState(() {
+      _textVar++;
+    });
   }
 }
