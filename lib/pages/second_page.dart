@@ -33,7 +33,7 @@ class _SecondPageState extends State<SecondPage>
       body: Center(
         child: Column(
           children: [
-            Text("wazzzzuuuuuuuuuppp"),
+            Text("page 2"),
             Text(_textVar.toString()),
             ElevatedButton(
               onPressed: incrementerOfNumbers,

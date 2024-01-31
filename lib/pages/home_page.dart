@@ -11,6 +11,18 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   late AnimationController _controller;
   final textController = TextEditingController();
 
@@ -40,16 +52,16 @@ class _HomePageState extends State<HomePage>
     );
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(vsync: this);
-  }
+  List toDoList = [
+    ["Do this", false],
+    ["Do that", false],
+    ["Do that again", false],
+  ];
 
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
+  onCheckboxClicked(value, index) {
+    setState(() {
+      toDoList[index][1] = ! toDoList[index][1];
+    });
   }
 
   @override
@@ -85,11 +97,18 @@ class _HomePageState extends State<HomePage>
               Navigator.pushNamed(context, '/secondpage');
             },
           ),
-          ListView(
-            children: [
-              ToDoTile(),
-            ],
-          )
+          ListView.builder(
+            itemCount: toDoList.length,
+            itemBuilder: (context, index) {
+              return ToDoTile(
+                taskName: toDoList[index][0],
+                taskCompleted: toDoList[index][1],
+                onChanged: (p0) => onCheckboxClicked(p0, index),
+              );
+            },
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
