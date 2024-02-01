@@ -1,10 +1,14 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:juno/data/database.dart';
 import 'package:juno/pages/home_page.dart';
 import 'package:juno/pages/second_page.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-void main() {
+void main() async {
+  await Hive.initFlutter();
+  var box = await Hive.openBox('myBox');
   runApp(const MyApp());
 }
 
@@ -16,10 +20,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-        primarySwatch: Colors.deepPurple
-      ),
+          // colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+          primarySwatch: Colors.deepPurple),
       // home: const MyHomePage(title: 'Flutter Demo Home Page'),
       home: HomePage(),
       routes: {
@@ -27,126 +30,28 @@ class MyApp extends StatelessWidget {
         '/secondpage': (context) => SecondPage(),
       },
     );
-  }   
+  }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
+  const MyHomePage({super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  var amount = <int>[];
-  var name = <String>[];
-  var timestamp = <String>[];
-  var description = <String>[];
-  var mode = <String>[];
-  var pending = <bool>[];
-
-  void _doNothing() {}
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.green,
-
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text("App Bar!"),
-        elevation: 0,
-      ),
-
-      body: ListView(
-        // mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          BoxButtonHome(),
-          BoxButton2(),
-
-        ],
-      ),
-
-      floatingActionButton: FloatingActionButton(
-        onPressed: _doNothing,
-        tooltip: 'Add transaction',
-        child: const Icon(Icons.add),
-      ),
-    );
+    return Scaffold();
   }
-}
 
-class BoxButton2 extends StatelessWidget {
-  const BoxButton2({
-    super.key,
-  });
+  final _myBox = Hive.box('myBox');
+  ToDoDatabase db = ToDoDatabase();
 
   @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.pushNamed(context, '/secondpage');
-      },
-      child: Container(
-        height: 300,
-        width: 300,
-        // padding: EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: Colors.indigo,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Center(
-          child: Text(
-            "!!go to page 2!!",
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 30,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class BoxButtonHome extends StatelessWidget {
-  const BoxButtonHome({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.pushNamed(context, '/homepage');
-      },
-      child: Container(
-        height: 300,
-        width: 300,
-        decoration: BoxDecoration(
-          color: Colors.amber,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        padding: EdgeInsets.all(20),
-        child: Text("go to home page"),
-      ),
-    );
-  }
-}
-
-class Transaction extends StatelessWidget {
-  const Transaction({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return const Row(
-      children: [
-        DecoratedBox(decoration: BoxDecoration(color: Colors.amberAccent))
-      ],
-    );
+  void initState() {
+    // TODO: implement initState
+    db.loadData();
   }
 }

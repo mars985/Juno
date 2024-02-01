@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:juno/models/some_database.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:juno/data/database.dart';
 import 'package:juno/models/todotile.dart';
 import 'package:juno/util/dialog_box.dart';
 
@@ -12,8 +13,19 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+
+  final _myBox = Hive.box('myBox');
+  ToDoDatabase db = ToDoDatabase();
+
   @override
   void initState() {
+    if (_myBox.get("TODOLISt") == "null") {
+      db.createInitialData();
+    } else {
+      db.loadData();
+    }
+
     super.initState();
     _controller = AnimationController(vsync: this);
   }
@@ -24,21 +36,11 @@ class _HomePageState extends State<HomePage>
     super.dispose();
   }
 
-  late AnimationController _controller;
-  final textController = TextEditingController();
-
-  String boxText = "hello";
-
-  List toDoList = [
-    ["Do this", false],
-    ["Do that", false],
-    ["Do that again", false],
-  ];
-
-  onCheckboxClicked(value, index) {
+  void onCheckboxClicked(value, index) {
     setState(() {
-      toDoList[index][1] = !toDoList[index][1];
+      db.toDoList[index][1] = !db.toDoList[index][1];
     });
+    db.updateDataBase();
   }
 
   var _textController = TextEditingController();
@@ -51,10 +53,11 @@ class _HomePageState extends State<HomePage>
           textController: _textController,
           onSave: () {
             setState(() {
-              toDoList.add([_textController.text, false]);
+              db.toDoList.add([_textController.text, false]);
             });
             Navigator.of(context).pop();
             _textController.clear();
+            db.updateDataBase();
           },
           onCancel: () {
             Navigator.of(context).pop();
@@ -71,61 +74,33 @@ class _HomePageState extends State<HomePage>
       appBar: AppBar(
         title: Text("Home Page"),
       ),
+
+      // display notes
+
       body: ListView.builder(
-        itemCount: toDoList.length,
+        itemCount: db.toDoList.length,
         itemBuilder: (context, index) {
           return ToDoTile(
-            taskName: toDoList[index][0],
-            taskCompleted: toDoList[index][1],
+            taskName: db.toDoList[index][0],
+            taskCompleted: db.toDoList[index][1],
             onChanged: (context) => onCheckboxClicked(context, index),
             deleteFunction: (context) {
               setState(() {
-                toDoList.removeAt(index);
+                db.toDoList.removeAt(index);
               });
+              db.updateDataBase();
             },
           );
         },
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
       ),
+
+      // create new note button
+
       floatingActionButton: FloatingActionButton(
         onPressed: createNewTask,
         child: const Icon(Icons.add),
-      ),
-    );
-  }
-}
-
-class BlueBox extends StatefulWidget {
-  const BlueBox({
-    super.key,
-    required this.boxText,
-  });
-
-  final String boxText;
-
-  @override
-  State<BlueBox> createState() => _BlueBoxState();
-}
-
-class _BlueBoxState extends State<BlueBox> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 200,
-      width: 200,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: Colors.blue,
-      ),
-      child: Center(
-        child: Text(
-          widget.boxText,
-          style: TextStyle(
-            fontSize: 30,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
       ),
     );
   }
