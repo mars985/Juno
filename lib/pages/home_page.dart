@@ -29,30 +29,6 @@ class _HomePageState extends State<HomePage>
 
   String boxText = "hello";
 
-  // void createNote() {
-  //   showDialog(
-  //     context: context,
-  //     builder: (context) => AlertDialog(
-  //       content: TextField(
-  //         controller: textController,
-  //       ),
-  //       actions: [
-  //         MaterialButton(
-  //           onPressed: () {
-  //             // context.Navigator.pop(context);
-  //             // boxText = textController.text;
-  //             // ValueNotifier(boxText = textController.text);
-  //             setState(() {
-  //               boxText = textController.text;
-  //             });
-  //           },
-  //           child: const Text("Create"),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
-
   List toDoList = [
     ["Do this", false],
     ["Do that", false],
@@ -71,11 +47,11 @@ class _HomePageState extends State<HomePage>
     showDialog(
       context: context,
       builder: (context) {
-        return dialogBox(
+        return DialogBox(
           textController: _textController,
           onSave: () {
             setState(() {
-              toDoList.add([_textController.text,false]);
+              toDoList.add([_textController.text, false]);
             });
             Navigator.of(context).pop();
             _textController.clear();
@@ -95,46 +71,22 @@ class _HomePageState extends State<HomePage>
       appBar: AppBar(
         title: Text("Home Page"),
       ),
-      body: Column(
-        // mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          BlueBox(boxText: boxText),
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: TextField(
-              autofocus: true,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5),
-                ),
-              ),
-              onSubmitted: (value) {
-                setState(() {
-                  boxText = value;
-                });
-              },
-            ),
-          ),
-          ElevatedButton(
-            child: Text("page 2"),
-            onPressed: () {
-              Navigator.pushNamed(context, '/secondpage');
+      body: ListView.builder(
+        itemCount: toDoList.length,
+        itemBuilder: (context, index) {
+          return ToDoTile(
+            taskName: toDoList[index][0],
+            taskCompleted: toDoList[index][1],
+            onChanged: (context) => onCheckboxClicked(context, index),
+            deleteFunction: (context) {
+              setState(() {
+                toDoList.removeAt(index);
+              });
             },
-          ),
-          ListView.builder(
-            itemCount: toDoList.length,
-            itemBuilder: (context, index) {
-              return ToDoTile(
-                taskName: toDoList[index][0],
-                taskCompleted: toDoList[index][1],
-                onChanged: (p0) => onCheckboxClicked(p0, index),
-              );
-            },
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-          ),
-        ],
+          );
+        },
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: createNewTask,

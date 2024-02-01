@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class dialogBox extends StatelessWidget {
+class DialogBox extends StatelessWidget {
   final textController;
 
   VoidCallback onCancel;
   VoidCallback onSave;
-  dialogBox({
+  DialogBox({
     super.key,
     required this.textController,
     required this.onCancel,
@@ -22,8 +22,9 @@ class dialogBox extends StatelessWidget {
         child: Column(
           children: [
             TextField(
-                controller: textController,
-                decoration: InputDecoration(border: OutlineInputBorder())),
+              controller: textController,
+              decoration: InputDecoration(border: OutlineInputBorder()),
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
