@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:juno/models/some_database.dart';
 import 'package:juno/models/todotile.dart';
+import 'package:juno/util/dialog_box.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -28,29 +29,29 @@ class _HomePageState extends State<HomePage>
 
   String boxText = "hello";
 
-  void createNote() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        content: TextField(
-          controller: textController,
-        ),
-        actions: [
-          MaterialButton(
-            onPressed: () {
-              // context.Navigator.pop(context);
-              // boxText = textController.text;
-              // ValueNotifier(boxText = textController.text);
-              setState(() {
-                boxText = textController.text;
-              });
-            },
-            child: const Text("Create"),
-          ),
-        ],
-      ),
-    );
-  }
+  // void createNote() {
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) => AlertDialog(
+  //       content: TextField(
+  //         controller: textController,
+  //       ),
+  //       actions: [
+  //         MaterialButton(
+  //           onPressed: () {
+  //             // context.Navigator.pop(context);
+  //             // boxText = textController.text;
+  //             // ValueNotifier(boxText = textController.text);
+  //             setState(() {
+  //               boxText = textController.text;
+  //             });
+  //           },
+  //           child: const Text("Create"),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   List toDoList = [
     ["Do this", false],
@@ -60,8 +61,32 @@ class _HomePageState extends State<HomePage>
 
   onCheckboxClicked(value, index) {
     setState(() {
-      toDoList[index][1] = ! toDoList[index][1];
+      toDoList[index][1] = !toDoList[index][1];
     });
+  }
+
+  var _textController = TextEditingController();
+
+  void createNewTask() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return dialogBox(
+          textController: _textController,
+          onSave: () {
+            setState(() {
+              toDoList.add([_textController.text,false]);
+            });
+            Navigator.of(context).pop();
+            _textController.clear();
+          },
+          onCancel: () {
+            Navigator.of(context).pop();
+            _textController.clear();
+          },
+        );
+      },
+    );
   }
 
   @override
@@ -112,8 +137,8 @@ class _HomePageState extends State<HomePage>
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: createNote,
-        child: const Icon(Icons.text_fields_rounded),
+        onPressed: createNewTask,
+        child: const Icon(Icons.add),
       ),
     );
   }
