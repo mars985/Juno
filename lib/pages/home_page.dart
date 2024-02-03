@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:juno/data/database.dart';
-import 'package:juno/models/todotile.dart';
-import 'package:juno/util/dialog_box.dart';
+import 'package:juno/data/theme.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -20,12 +20,6 @@ class _HomePageState extends State<HomePage>
 
   @override
   void initState() {
-    if (_myBox.get("TODOLISt") == "null") {
-      db.createInitialData();
-    } else {
-      db.loadData();
-    }
-
     super.initState();
     _controller = AnimationController(vsync: this);
   }
@@ -36,71 +30,44 @@ class _HomePageState extends State<HomePage>
     super.dispose();
   }
 
-  void onCheckboxClicked(value, index) {
-    setState(() {
-      db.toDoList[index][1] = !db.toDoList[index][1];
-    });
-    db.updateDataBase();
-  }
-
   var _textController = TextEditingController();
-
-  void createNewTask() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return DialogBox(
-          textController: _textController,
-          onSave: () {
-            setState(() {
-              db.toDoList.add([_textController.text, false]);
-            });
-            Navigator.of(context).pop();
-            _textController.clear();
-            db.updateDataBase();
-          },
-          onCancel: () {
-            Navigator.of(context).pop();
-            _textController.clear();
-          },
-        );
-      },
-    );
+  Themes theme = Themes();
+  var themePicked = 1;
+  getColor(paletteName) {
+    // return theme.colorPalette[themePicked][index];
+    return Color(theme.colors[themePicked][paletteName]);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: getColor("background"),
       appBar: AppBar(
-        title: Text("Home Page"),
+        title: Text(
+          "Expenses",
+          style: TextStyle(color: getColor("text_dark")),
+        ),
+        backgroundColor: getColor("background"),
       ),
-
-      // display notes
-
-      body: ListView.builder(
-        itemCount: db.toDoList.length,
-        itemBuilder: (context, index) {
-          return ToDoTile(
-            taskName: db.toDoList[index][0],
-            taskCompleted: db.toDoList[index][1],
-            onChanged: (context) => onCheckboxClicked(context, index),
-            deleteFunction: (context) {
-              setState(() {
-                db.toDoList.removeAt(index);
-              });
-              db.updateDataBase();
-            },
-          );
-        },
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
+      body: Text(
+        "hello",
+        style: TextStyle(color: getColor("text_dark")),
       ),
-
-      // create new note button
-
-      floatingActionButton: FloatingActionButton(
-        onPressed: createNewTask,
-        child: const Icon(Icons.add),
+      bottomNavigationBar: Container(
+        color: getColor("primary"),
+        child: GNav(
+          // padding: EdgeInsets.all(10),
+          iconSize: 24,
+          tabBackgroundColor: getColor("accent"),
+          tabBorderRadius: 20,
+          // padding: EdgeInsets.all(20),
+          tabs: [
+            GButton(
+                iconActiveColor: getColor("secondary"),
+                icon: Icons.home,
+                text: "H O M E"),
+          ],
+        ),
       ),
     );
   }

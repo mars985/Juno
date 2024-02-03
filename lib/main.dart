@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:juno/data/database.dart';
 import 'package:juno/pages/home_page.dart';
-import 'package:juno/pages/second_page.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async {
@@ -27,7 +26,6 @@ class MyApp extends StatelessWidget {
       home: HomePage(),
       routes: {
         '/homepage': (context) => HomePage(),
-        '/secondpage': (context) => SecondPage(),
       },
     );
   }
