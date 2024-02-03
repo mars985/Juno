@@ -1,23 +1,30 @@
 import 'package:hive_flutter/hive_flutter.dart';
 
 class ToDoDatabase {
-  List toDoList = [];
+  List transactionHistory = [];
+  List persons = [];
 
   final _myBox = Hive.box('myBox');
 
   void createInitialData() {
-    toDoList = [
-      ["Do this", false],
-      ["Do that", false],
-      ["Do that again", false],
+    transactionHistory = [
+      [
+        "string name of person",
+        "float transaction amount",
+        "string date and time",
+        "string pending",
+        "string wallet",
+        "string description",
+      ],
     ];
   }
 
   void loadData() {
-    toDoList = _myBox.get("TODOLIST");
+    var loadedData = _myBox.get("TODOLIST");
+    transactionHistory = loadedData ?? [];
   }
 
   void updateDataBase() {
-    _myBox.put("TODOLIST", toDoList);
+    _myBox.put("TODOLIST", transactionHistory);
   }
 }
