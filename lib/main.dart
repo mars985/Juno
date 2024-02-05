@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:juno/data/database.dart';
 import 'package:juno/data/theme.dart';
 import 'package:juno/models/navdrawer.dart';
+import 'package:juno/pages/habit_page.dart';
 import 'package:juno/pages/home_page.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:juno/pages/people_page.dart';
@@ -33,11 +34,12 @@ class _MyAppState extends State<MyApp> {
     return Color(theme.colors[themePicked][paletteName]);
   }
 
-  List<Widget> _pages = [
+  final List<Widget> _pages = [
     HomePage(),
     PeoplePage(),
+    HabitPage(),
   ];
-  var _pageSelected = 0;
+  var _pageSelected = 2;
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +48,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
           // colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
-          primarySwatch: Colors.deepPurple),
+          primarySwatch: Colors.grey),
       // home: const MyHomePage(title: 'Flutter Demo Home Page'),
       home: Scaffold(
         appBar: AppBar(
@@ -56,7 +58,9 @@ class _MyAppState extends State<MyApp> {
           ),
           backgroundColor: getColor("background"),
         ),
-        body: _pages[_pageSelected],
+        body: GestureDetector(
+          child: _pages[_pageSelected],
+        ),
         drawer: myDrawer(
           onTap: (index) {
             setState(() {
@@ -65,10 +69,11 @@ class _MyAppState extends State<MyApp> {
           },
         ),
       ),
-      routes: {
-        '/homepage': (context) => HomePage(),
-        '/peoplepage': (context) => PeoplePage(),
-      },
+      // routes: {
+      //   '/homepage': (context) => HomePage(),
+      //   '/peoplepage': (context) => PeoplePage(),
+      //   '/habitpage': (context) => HabitPage(),
+      // },
     );
   }
 }

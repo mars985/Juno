@@ -13,10 +13,13 @@ class myDrawer extends StatefulWidget {
 }
 
 class _myDrawerState extends State<myDrawer> {
+  onTapp(index) {
+    widget.onTap(index);
+    Navigator.pop(context);
+  }
+
   @override
-  Widget build(
-    BuildContext context,
-  ) {
+  Widget build(BuildContext context) {
     return Drawer(
       child: SafeArea(
         child: Column(
@@ -29,19 +32,21 @@ class _myDrawerState extends State<myDrawer> {
             ListTile(
               leading: const Icon(Icons.home),
               title: const Text("H O M E"),
-              onTap: () {
-                widget.onTap(0);
-                Navigator.pop(context);
-              },
+              onTap: () => onTapp(0),
             ),
             ListTile(
               leading: const Icon(Icons.people),
               title: const Text("P E O P L E"),
-              onTap: () {
-                widget.onTap(1);
-                Navigator.pop(context);
-              },
-            )
+              onTap: () => onTapp(1),
+            ),
+            DrawerHeader(
+              child: Icon(Icons.checklist, size: 40,),
+            ),
+            ListTile(
+              leading: const Icon(Icons.dashboard),
+              title: const Text("D A S H B O A R D"),
+              onTap: () => onTapp(2),
+            ),
           ],
         ),
       ),
