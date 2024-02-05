@@ -12,19 +12,19 @@ class ToDoDatabase {
         "string name of person",
         "float transaction amount",
         "string date and time",
-        "string pending",
-        "string wallet",
+        "string how pending",
+        "string which wallet",
         "string description",
       ],
     ];
   }
 
   void loadData() {
-    var loadedData = _myBox.get("TODOLIST");
+    var loadedData = _myBox.get("EXPENSES");
     transactionHistory = loadedData ?? [];
   }
 
   void updateDataBase() {
-    _myBox.put("TODOLIST", transactionHistory);
+    _myBox.put("EXPENSES", transactionHistory);
   }
 }

@@ -45,7 +45,6 @@ class _HomePageState extends State<HomePage>
   @override
   Widget build(BuildContext context) {
     return Column(
-      // crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // placeholder
         Text(
@@ -60,6 +59,5 @@ class _HomePageState extends State<HomePage>
         )
       ],
     );
-    // return Placeholder();
   }
 }
