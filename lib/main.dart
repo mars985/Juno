@@ -31,6 +31,7 @@ class _MyAppState extends State<MyApp> {
 
   var themePicked = 0;
   Themes theme = Themes();
+
   getColor(paletteName) {
     // return theme.colorPalette[themePicked][index];
     return Color(theme.colors[themePicked][paletteName]);

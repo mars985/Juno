@@ -43,13 +43,13 @@ class CustomListTile extends StatefulWidget {
 class _customListTileState extends State<CustomListTile> {
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      child: ListTile(
-        // shape: BeveledRectangleBorder(
-        //     borderRadius: BorderRadius.all(Radius.circular(5))),
-        leading: CircleAvatar(child: Icon(Icons.person)),
-        onTap: () {},
-        title: Row(
+    return ListTile(
+      // shape: BeveledRectangleBorder(
+      //     borderRadius: BorderRadius.all(Radius.circular(5))),
+      leading: CircleAvatar(child: Icon(Icons.person)),
+      onTap: () {},
+      title: Expanded(
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text("Person Person"),
