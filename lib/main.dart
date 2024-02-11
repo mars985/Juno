@@ -14,6 +14,7 @@ void main() async {
   var box = await Hive.openBox('myBox');
   runApp(MyApp());
 }
+ 
 
 var _selectedIndex = 0;
 
@@ -25,10 +26,11 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   var themePicked = 0;
-
   Themes theme = Themes();
-
   getColor(paletteName) {
     // return theme.colorPalette[themePicked][index];
     return Color(theme.colors[themePicked][paletteName]);
@@ -38,6 +40,11 @@ class _MyAppState extends State<MyApp> {
     HomePage(),
     PeoplePage(),
     HabitPage(),
+  ];
+  final List<String> _pageAppBar = [
+    "Expenses",
+    "Expenses",
+    "Habits",
   ];
   var _pageSelected = 2;
 
@@ -51,16 +58,15 @@ class _MyAppState extends State<MyApp> {
           primarySwatch: Colors.grey),
       // home: const MyHomePage(title: 'Flutter Demo Home Page'),
       home: Scaffold(
+        backgroundColor: Colors.grey[100],
         appBar: AppBar(
           title: Text(
-            "Expenses",
+            _pageAppBar[_pageSelected],
             style: TextStyle(color: getColor("text_dark")),
           ),
           backgroundColor: getColor("background"),
         ),
-        body: GestureDetector(
-          child: _pages[_pageSelected],
-        ),
+        body: _pages[_pageSelected],
         drawer: myDrawer(
           onTap: (index) {
             setState(() {
@@ -69,11 +75,6 @@ class _MyAppState extends State<MyApp> {
           },
         ),
       ),
-      // routes: {
-      //   '/homepage': (context) => HomePage(),
-      //   '/peoplepage': (context) => PeoplePage(),
-      //   '/habitpage': (context) => HabitPage(),
-      // },
     );
   }
 }
@@ -92,7 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   final _myBox = Hive.box('myBox');
-  ToDoDatabase db = ToDoDatabase();
+  ExpensesDatabase db = ExpensesDatabase();
 
   @override
   void initState() {

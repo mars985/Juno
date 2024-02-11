@@ -1,0 +1,57 @@
+
+
+category 1
+- task 1
+- task 2
+- task 3
+
+category 2
+- task 1
+- task 2
+
+category 3
+- task 1
+- task 2
+- task 3
+- task 4
+
+day = [
+    category 1,
+    category 2,
+    category 3,
+]
+day = [
+    [
+        task 1
+    ],
+    category 2,
+    category 3,
+]
+
+task
+- string task name
+- bool completed
+- datetime deadline
+- datetime time of completion
+
+day = [
+    [
+        [
+            string task name,
+            bool completed,
+            datetime deadline,
+            datetime time of completion,
+        ], // task
+    ], // category
+    category 2,
+    category 3,
+]
+
+box = [
+    day 1,
+    day 2,
+    day 3,
+]
+
+if (new day)
+    pushNewDaytoBox()

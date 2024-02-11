@@ -17,7 +17,7 @@ class _HomePageState extends State<HomePage>
   late AnimationController _controller;
 
   final _myBox = Hive.box('myBox');
-  ToDoDatabase db = ToDoDatabase();
+  ExpensesDatabase db = ExpensesDatabase();
 
   @override
   void initState() {
@@ -42,22 +42,51 @@ class _HomePageState extends State<HomePage>
 
   var _selectedIndex = 0;
 
+  bool isExpanded = false;
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        // placeholder
-        Text(
-          "home",
-          style: TextStyle(color: getColor("text_dark")),
-        ),
-        Container(
-          child: Text("container"),
-          color: Colors.amber[800],
-          width: 100,
-          height: 100,
-        )
-      ],
+    // return GridView.builder(
+    //   itemBuilder: (context, index) {
+    //     return Placeholder();
+    //   },
+    //   itemCount: 3,
+    //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+    // );
+    return ListView.builder(
+      itemCount: 3,
+      itemBuilder: (BuildContext context, int index) {
+        return Padding(
+          padding: EdgeInsets.only(
+            top: 12,
+          ),
+          child: ListTile(
+            leading: CircleAvatar(child: Icon(Icons.person)),
+            title: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Person Person",
+                  style: TextStyle(),
+                ),
+                Container(
+                  // color: Colors.blueGrey[400],
+                  // child: Expanded(
+                  //   child: Text(
+                  //     "blah blah blah blah blah blah blah blah",
+                  //     overflow: TextOverflow.ellipsis,
+                  //   ),
+                  // ),
+                ),
+                if (isExpanded) Text("more text"),
+              ],
+            ),
+            trailing: Text("\$1000"),
+          ),
+        );
+      },
     );
   }
 }
+
+
