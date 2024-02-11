@@ -43,27 +43,27 @@ class CustomListTile extends StatefulWidget {
 class _customListTileState extends State<CustomListTile> {
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      // shape: BeveledRectangleBorder(
-      //     borderRadius: BorderRadius.all(Radius.circular(5))),
-      leading: CircleAvatar(child: Icon(Icons.person)),
-      onTap: () {},
-      title: Expanded(
-        child: Row(
+    return InkWell(
+      child: ListTile(
+        // shape: BeveledRectangleBorder(
+        //     borderRadius: BorderRadius.all(Radius.circular(5))),
+        leading: CircleAvatar(child: Icon(Icons.person)),
+        onTap: () {},
+        title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text("Person Person"),
             Row(
               children: [
-                Text("\$ 10000"),
+                SvgPicture.asset('assets/money.svg'),
                 SizedBox(width: 10,),
-                SvgPicture.asset('assets/money.svg')
+                Text("\$ 10000"),
               ],
             ),
           ],
         ),
+        // trailing: Checkbox(value: false, onChanged: (value) {}),
       ),
-      // trailing: Checkbox(value: false, onChanged: (value) {}),
     );
   }
 }
