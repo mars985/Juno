@@ -55,3 +55,18 @@ box = [
 
 if (new day)
     pushNewDaytoBox()
+
+box = [
+    [
+        [
+            string task name,
+            bool completed,
+            datetime deadline,
+            datetime time of completion,
+        ], // task
+        category 2,
+        category 3,
+    ],
+    day 2,
+    day 3,
+]

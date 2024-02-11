@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:juno/data/database.dart';
+import 'package:juno/data/databasehabits.dart';
 import 'package:juno/data/theme.dart';
 import 'package:juno/models/navdrawer.dart';
 import 'package:juno/pages/habit_page.dart';
@@ -12,6 +13,10 @@ import 'package:juno/pages/people_page.dart';
 void main() async {
   await Hive.initFlutter();
   var box = await Hive.openBox('myBox');
+  
+  var _habits = await Hive.openBox('habits');
+  HabitsDatabase().pushNewDay();
+
   runApp(MyApp());
 }
  
@@ -58,6 +63,7 @@ class _MyAppState extends State<MyApp> {
           primarySwatch: Colors.grey),
       // home: const MyHomePage(title: 'Flutter Demo Home Page'),
       home: Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: Colors.grey[100],
         appBar: AppBar(
           title: Text(
