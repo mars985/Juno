@@ -40,7 +40,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(useMaterial3: true, primarySwatch: Colors.grey),
       home: Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.grey,
+        backgroundColor: Colors.grey[400],
         appBar: AppBar(
           title: Text(_pageAppBar[_pageSelected]),
         ),
