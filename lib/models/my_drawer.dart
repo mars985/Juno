@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
-class myDrawer extends StatefulWidget {
-  final onTap;
+class MyDrawer extends StatefulWidget {
+  final void Function(int) onTap;
 
-  const myDrawer({
+  const MyDrawer({
     super.key,
     required this.onTap,
   });
 
   @override
-  State<myDrawer> createState() => _myDrawerState();
+  State<MyDrawer> createState() => _MyDrawerState();
 }
 
-class _myDrawerState extends State<myDrawer> {
+class _MyDrawerState extends State<MyDrawer> {
   onTapp(index) {
     widget.onTap(index);
     Navigator.pop(context);
