@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_heatmap_calendar/flutter_heatmap_calendar.dart';
+import 'package:juno/heatmap/flutter_heatmap_calendar.dart';
+// import 'package:flutter_heatmap_calendar/flutter_heatmap_calendar.dart';
 import 'package:juno/models/text_widgets.dart';
 
 class HabitPage extends StatelessWidget {
@@ -129,7 +130,14 @@ class MyHeatMap extends StatelessWidget {
           DateTime(2024, 03, 04): 4,
           DateTime(2024, 03, 05): 5,
         },
+        defaultColor: Colors.grey,
         colorsets: {0: Colors.red},
+        // colorTipSize: 0,
+        size: 10,
+        showText: false,
+        borderRadius: 2,
+        showColorTip: false,
+        
       ),
     );
   }
