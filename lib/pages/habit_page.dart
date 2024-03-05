@@ -27,20 +27,50 @@ class MyTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 4, 0, 4),
-      child: AspectRatio(
-        aspectRatio: 1.5 / 1,
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(4),
-            color: Colors.grey[500],
-          ),
-          child: Column(
-            children: [
-              InfoBar(),
-              MyHeatMap(),
-            ],
-          ),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(4),
+          color: Colors.grey[500],
         ),
+        child: Column(
+          children: [
+            InfoBar(),
+            MyHeatMap(
+              dataMap: {
+                DateTime(2024, 03, 01): 1,
+                DateTime(2024, 03, 02): 2,
+                DateTime(2024, 03, 03): 3,
+                DateTime(2024, 03, 04): 4,
+                DateTime(2024, 03, 05): 5,
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class MyHeatMap extends StatelessWidget {
+  MyHeatMap({super.key, required this.dataMap});
+  final Map<DateTime, int> dataMap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
+      child: HeatMap(
+        margin: EdgeInsets.symmetric(vertical: 1, horizontal: 1),
+        scrollable: true,
+        endDate: DateTime.now(),
+        datasets: dataMap,
+        defaultColor: Colors.grey[600],
+        colorsets: {0: Colors.red},
+        // colorTipSize: 0,
+        size: 10,
+        showText: false,
+        borderRadius: 2,
+        showColorTip: false,
       ),
     );
   }
@@ -108,36 +138,6 @@ class IconContainer extends StatelessWidget {
           color: Colors.grey[350],
         ),
         child: icon,
-      ),
-    );
-  }
-}
-
-class MyHeatMap extends StatelessWidget {
-  MyHeatMap({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.grey[400],
-      child: HeatMap(
-        scrollable: true,
-        endDate: DateTime.now(),
-        datasets: {
-          DateTime(2024, 03, 01): 1,
-          DateTime(2024, 03, 02): 2,
-          DateTime(2024, 03, 03): 3,
-          DateTime(2024, 03, 04): 4,
-          DateTime(2024, 03, 05): 5,
-        },
-        defaultColor: Colors.grey,
-        colorsets: {0: Colors.red},
-        // colorTipSize: 0,
-        size: 10,
-        showText: false,
-        borderRadius: 2,
-        showColorTip: false,
-        
       ),
     );
   }
