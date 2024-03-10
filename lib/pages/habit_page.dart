@@ -39,32 +39,19 @@ class HabitPage extends StatelessWidget {
           ]),
         ),
         body: TabBarView(children: [
-          MyListView(habits: _habits),
+          ListView.builder(
+            itemCount: _habits.length,
+            padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
+            itemBuilder: (context, index) {
+              return MyTile(index: index);
+            },
+          ),
           TaskCreationDialog(
               controllerName: _controllerName,
               controllerDescription: _controllerDescription,
               habits: _habits),
         ]),
       ),
-    );
-  }
-}
-
-class MyListView extends StatelessWidget {
-  const MyListView({
-    super.key,
-    required habits,
-  }) : _habits = habits;
-
-  final _habits;
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: _habits.length,
-      padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
-      itemBuilder: (context, index) {
-        return MyTile(index: index);
-      },
     );
   }
 }

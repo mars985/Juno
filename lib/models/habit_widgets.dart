@@ -30,13 +30,19 @@ class MyHeatMap extends StatelessWidget {
   }
 }
 
-class InfoBar extends StatelessWidget {
+class InfoBar extends StatefulWidget {
   InfoBar({
     super.key,
     required this.index,
   });
 
   final int index;
+
+  @override
+  State<InfoBar> createState() => _InfoBarState();
+}
+
+class _InfoBarState extends State<InfoBar> {
   final hdb = HabitsDatabase();
 
   @override
@@ -51,18 +57,25 @@ class InfoBar extends StatelessWidget {
               icon: Icon(Icons.monitor_heart_rounded),
               onTap: () {},
             ),
+            IconContainer(
+              icon: Icon(Icons.delete),
+              onTap: () {
+                setState(() {
+                  hdb.deleteTaskAt(widget.index);
+                });
+              },
+            ),
             Padding(
               padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Heading(text: hdb.getTask(index)["taskname"]),
-                  // Heading(text: "title"),
-                  Subtitle(text: "description"),
+                  Heading(text: hdb.getTaskAt(widget.index)["taskname"]),
+                  Subtitle(text: hdb.getTaskAt(widget.index)["description"]),
                 ],
               ),
-            ),
+            )
           ],
         ),
         // Container(color: Colors.amber, height: 10, width: 10),
@@ -136,15 +149,18 @@ class IconContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(4),
-          color: Colors.grey[350],
+    return GestureDetector(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(4),
+            color: Colors.grey[350],
+          ),
+          child: icon,
         ),
-        child: icon,
       ),
     );
   }

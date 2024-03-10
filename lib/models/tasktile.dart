@@ -28,7 +28,7 @@ class TaskTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(getValueAt(indexCategory, indexTask, 0, hdb.getDay())),
+      // title: Text(getValueAt(indexCategory, indexTask, 0, hdb.getDay())),
       // title: Text("pl"),
       leading: Checkbox(
         value: false,
