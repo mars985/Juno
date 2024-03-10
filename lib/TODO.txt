@@ -70,3 +70,17 @@ box = [
     day 2,
     day 3,
 ]
+
+========= 2024-03-05_19.19.19 =========
+
+box = [
+    task 1,
+    task 2,
+    task 3,
+]
+
+task = {
+    "taskname": taskname
+    "description": String
+    "dataset": Map<DateTime, int>
+}

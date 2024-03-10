@@ -1,18 +1,69 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+
 import 'package:flutter/material.dart';
-import 'package:juno/heatmap/flutter_heatmap_calendar.dart';
-// import 'package:flutter_heatmap_calendar/flutter_heatmap_calendar.dart';
-import 'package:juno/models/text_widgets.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:juno/data/databasehabits.dart';
+import 'package:juno/models/habit_widgets.dart';
 
 class HabitPage extends StatelessWidget {
-  const HabitPage({super.key});
+  HabitPage({super.key});
+  final _habits = Hive.box("habits");
+  final hdb = HabitsDatabase();
+
+  final _controllerName = TextEditingController();
+  final _controllerDescription = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    // return ListView.builder(
+    //   itemBuilder: (context, index) {
+    //     return Column(
+    //       children: [
+    //         Text(hdb.getTask(index)["name"]),
+    //         Text(hdb.getTask(index)["description"]),
+    //       ],
+    //     );
+    //   },
+    //   itemCount: _habits.toMap().length,
+    //   shrinkWrap: true,
+    //   scrollDirection: Axis.vertical,
+    // );
+
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          bottom: TabBar(tabs: [
+            Tab(icon: Icon(Icons.task)),
+            Tab(icon: Icon(Icons.add)),
+          ]),
+        ),
+        body: TabBarView(children: [
+          MyListView(habits: _habits),
+          TaskCreationDialog(
+              controllerName: _controllerName,
+              controllerDescription: _controllerDescription,
+              habits: _habits),
+        ]),
+      ),
+    );
+  }
+}
+
+class MyListView extends StatelessWidget {
+  const MyListView({
+    super.key,
+    required habits,
+  }) : _habits = habits;
+
+  final _habits;
+  @override
+  Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: 8,
+      itemCount: _habits.length,
       padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
       itemBuilder: (context, index) {
-        return const MyTile();
+        return MyTile(index: index);
       },
     );
   }
@@ -21,7 +72,10 @@ class HabitPage extends StatelessWidget {
 class MyTile extends StatelessWidget {
   const MyTile({
     super.key,
+    required this.index,
   });
+
+  final int index;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +88,7 @@ class MyTile extends StatelessWidget {
         ),
         child: Column(
           children: [
-            InfoBar(),
+            InfoBar(index: index),
             MyHeatMap(
               dataMap: {
                 DateTime(2024, 03, 01): 1,
@@ -46,98 +100,6 @@ class MyTile extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class MyHeatMap extends StatelessWidget {
-  MyHeatMap({super.key, required this.dataMap});
-  final Map<DateTime, int> dataMap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
-      child: HeatMap(
-        margin: EdgeInsets.symmetric(vertical: 1, horizontal: 1),
-        scrollable: true,
-        endDate: DateTime.now(),
-        datasets: dataMap,
-        defaultColor: Colors.grey[600],
-        colorsets: {0: Colors.red},
-        // colorTipSize: 0,
-        size: 10,
-        showText: false,
-        borderRadius: 2,
-        showColorTip: false,
-      ),
-    );
-  }
-}
-
-class InfoBar extends StatelessWidget {
-  const InfoBar({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            IconContainer(
-              icon: Icon(Icons.monitor_heart_rounded),
-              onTap: () {},
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Heading(text: "Title"),
-                  Subtitle(text: "description"),
-                ],
-              ),
-            ),
-          ],
-        ),
-        // Container(color: Colors.amber, height: 10, width: 10),
-        IconContainer(
-          icon: Icon(Icons.add_rounded),
-          onTap: () {},
-        ),
-        // Container(color: Colors.amber, height: 10, width: 10),
-      ],
-    );
-  }
-}
-
-class IconContainer extends StatelessWidget {
-  const IconContainer({
-    super.key,
-    required this.icon,
-    required this.onTap,
-  });
-
-  final Icon icon;
-  final void Function() onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        padding: const EdgeInsets.all(12),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(4),
-          color: Colors.grey[350],
-        ),
-        child: icon,
       ),
     );
   }
