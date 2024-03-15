@@ -36,11 +36,7 @@ class _MyAppState extends State<MyApp> {
     "Habits",
   ];
   var _pageSelected = 2;
-  final _habits = Hive.box("habits");
-
-  final _controllerName = TextEditingController();
-  final _controllerDescription = TextEditingController();
-
+  
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -59,20 +55,6 @@ class _MyAppState extends State<MyApp> {
               setState(() {
                 _pageSelected = index;
               });
-            },
-          ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return TaskCreationDialog(
-                    controllerName: _controllerName,
-                    controllerDescription: _controllerDescription,
-                    habits: _habits,
-                  );
-                },
-              );
             },
           ),
         ),

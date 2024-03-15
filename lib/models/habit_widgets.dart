@@ -14,7 +14,7 @@ class MyTile extends StatelessWidget {
     required this.habitsDatabase,
   });
 
-  final habitsDatabase;
+  final HabitsDatabase habitsDatabase;
   final int index;
 
   @override
@@ -30,7 +30,7 @@ class MyTile extends StatelessWidget {
           children: [
             InfoBar(
               index: index,
-              hdb: habitsDatabase,
+              habitsDatabase: habitsDatabase,
             ),
             MyHeatMap(
               dataMap: {
@@ -52,11 +52,11 @@ class InfoBar extends StatelessWidget {
   InfoBar({
     super.key,
     required this.index,
-    required this.hdb,
+    required this.habitsDatabase,
   });
 
   final int index;
-  final hdb;
+  final habitsDatabase;
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +73,7 @@ class InfoBar extends StatelessWidget {
             IconContainer(
               icon: Icon(Icons.delete),
               onTap: () {
-                hdb.deleteTaskAt(index);
+                habitsDatabase.deleteTaskAt(index);
               },
             ),
             Padding(
@@ -82,19 +82,17 @@ class InfoBar extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Heading(text: hdb.getTaskAt(index)["taskname"]),
-                  Subtitle(text: hdb.getTaskAt(index)["description"]),
+                  Heading(text: habitsDatabase.getTaskAt(index)["taskname"]),
+                  Subtitle(text: habitsDatabase.getTaskAt(index)["description"]),
                 ],
               ),
             )
           ],
         ),
-        // Container(color: Colors.amber, height: 10, width: 10),
         IconContainer(
           icon: Icon(Icons.add_rounded),
           onTap: () {},
         ),
-        // Container(color: Colors.amber, height: 10, width: 10),
       ],
     );
   }
@@ -125,15 +123,11 @@ class MyHeatMap extends StatelessWidget {
 }
 
 class TaskCreationDialog extends StatefulWidget {
-  const TaskCreationDialog({
-    required TextEditingController controllerName,
-    required TextEditingController controllerDescription,
+  TaskCreationDialog({
     required Box habits,
-  })  : _controllerName = controllerName,
-        _controllerDescription = controllerDescription;
-
-  final TextEditingController _controllerName;
-  final TextEditingController _controllerDescription;
+  });
+  final _controllerDescription = TextEditingController();
+  final _controllerName = TextEditingController();
 
   @override
   State<TaskCreationDialog> createState() => _TaskCreationDialogState();

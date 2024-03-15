@@ -24,35 +24,34 @@ class _HabitPageState extends State<HabitPage> {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        appBar: AppBar(
-          bottom: TabBar(tabs: [
-            Tab(icon: Icon(Icons.task)),
-            Tab(icon: Icon(Icons.add)),
-          ]),
-        ),
-        body: TabBarView(children: [
-          Builder(
+    return Scaffold(
+      appBar: AppBar(),
+      body: Builder(
+        builder: (context) {
+          var habitsDatabase =
+              Provider.of<HabitsDatabase>(context, listen: true);
+          return ListView.builder(
+            itemCount: habitsDatabase.getLength(),
+            shrinkWrap: true,
+            scrollDirection: Axis.vertical,
+            padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
+            itemBuilder: (context, index) {
+              return MyTile(index: index, habitsDatabase: habitsDatabase);
+            },
+          );
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showDialog(
+            context: context,
             builder: (context) {
-              var habitsDatabase = Provider.of<HabitsDatabase>(context, listen: true);
-              return ListView.builder(
-                itemCount: habitsDatabase.getLength(),
-                shrinkWrap: true,
-                scrollDirection: Axis.vertical,
-                padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
-                itemBuilder: (context, index) {
-                  return MyTile(index: index, habitsDatabase: habitsDatabase);
-                },
+              return TaskCreationDialog(
+                habits: _habits,
               );
-            }
-          ),
-          TaskCreationDialog(
-              controllerName: _controllerName,
-              controllerDescription: _controllerDescription,
-              habits: _habits),
-        ]),
+            },
+          );
+        },
       ),
     );
   }
