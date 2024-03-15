@@ -7,6 +7,7 @@ import 'package:juno/models/my_drawer.dart';
 import 'package:juno/pages/habit_page.dart';
 import 'package:juno/pages/home_page.dart';
 import 'package:juno/pages/people_page.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   // WidgetsFlutterBinding.ensureInitialized();
@@ -38,21 +39,24 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Juno',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(useMaterial3: true, primarySwatch: Colors.grey),
-      home: Scaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.grey[400],
-        appBar: AppBar(title: Text(_pageAppBar[_pageSelected])),
-        body: _pages[_pageSelected],
-        drawer: MyDrawer(
-          onTap: (index) {
-            setState(() {
-              _pageSelected = index;
-            });
-          },
+    return ChangeNotifierProvider(
+      create: (context) => HabitsDatabase(),
+      child: MaterialApp(
+        title: 'Juno',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(useMaterial3: true, primarySwatch: Colors.grey),
+        home: Scaffold(
+          resizeToAvoidBottomInset: false,
+          backgroundColor: Colors.grey[400],
+          appBar: AppBar(title: Text(_pageAppBar[_pageSelected])),
+          body: _pages[_pageSelected],
+          drawer: MyDrawer(
+            onTap: (index) {
+              setState(() {
+                _pageSelected = index;
+              });
+            },
+          ),
         ),
       ),
     );

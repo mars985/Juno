@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_constructors_in_immutables, prefer_const_literals_to_create_immutables, use_key_in_widget_constructors
+
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:juno/data/databasehabits.dart';
@@ -5,45 +7,56 @@ import 'package:juno/heatmap/src/heatmap.dart';
 
 import 'text_widgets.dart';
 
-class MyHeatMap extends StatelessWidget {
-  MyHeatMap({super.key, required this.dataMap});
-  final Map<DateTime, int> dataMap;
+class MyTile extends StatelessWidget {
+  const MyTile({
+    super.key,
+    required this.index,
+    required this.habitsDatabase,
+  });
+
+  final habitsDatabase;
+  final int index;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
-      child: HeatMap(
-        margin: EdgeInsets.symmetric(vertical: 1, horizontal: 1),
-        scrollable: true,
-        endDate: DateTime.now(),
-        datasets: dataMap,
-        defaultColor: Colors.grey[600],
-        colorsets: {0: Colors.red},
-        // colorTipSize: 0,
-        size: 10,
-        showText: false,
-        borderRadius: 2,
-        showColorTip: false,
+      padding: const EdgeInsets.fromLTRB(0, 4, 0, 4),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(4),
+          color: Colors.grey[500],
+        ),
+        child: Column(
+          children: [
+            InfoBar(
+              index: index,
+              hdb: habitsDatabase,
+            ),
+            MyHeatMap(
+              dataMap: {
+                DateTime(2024, 03, 01): 1,
+                DateTime(2024, 03, 02): 2,
+                DateTime(2024, 03, 03): 3,
+                DateTime(2024, 03, 04): 4,
+                DateTime(2024, 03, 05): 5,
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
 }
 
-class InfoBar extends StatefulWidget {
+class InfoBar extends StatelessWidget {
   InfoBar({
     super.key,
     required this.index,
+    required this.hdb,
   });
 
   final int index;
-
-  @override
-  State<InfoBar> createState() => _InfoBarState();
-}
-
-class _InfoBarState extends State<InfoBar> {
-  final hdb = HabitsDatabase();
+  final hdb;
 
   @override
   Widget build(BuildContext context) {
@@ -60,9 +73,7 @@ class _InfoBarState extends State<InfoBar> {
             IconContainer(
               icon: Icon(Icons.delete),
               onTap: () {
-                setState(() {
-                  hdb.deleteTaskAt(widget.index);
-                });
+                hdb.deleteTaskAt(index);
               },
             ),
             Padding(
@@ -71,8 +82,8 @@ class _InfoBarState extends State<InfoBar> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Heading(text: hdb.getTaskAt(widget.index)["taskname"]),
-                  Subtitle(text: hdb.getTaskAt(widget.index)["description"]),
+                  Heading(text: hdb.getTaskAt(index)["taskname"]),
+                  Subtitle(text: hdb.getTaskAt(index)["description"]),
                 ],
               ),
             )
@@ -89,45 +100,62 @@ class _InfoBarState extends State<InfoBar> {
   }
 }
 
-class TaskCreationDialog extends StatefulWidget {
+class MyHeatMap extends StatelessWidget {
+  MyHeatMap({super.key, required this.dataMap});
+  final Map<DateTime, int> dataMap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
+      child: HeatMap(
+        margin: EdgeInsets.symmetric(vertical: 1, horizontal: 1),
+        scrollable: true,
+        endDate: DateTime.now(),
+        datasets: dataMap,
+        defaultColor: Colors.grey[600],
+        colorsets: {0: Colors.red},
+        size: 10,
+        showText: false,
+        borderRadius: 2,
+        showColorTip: false,
+      ),
+    );
+  }
+}
+
+class TaskCreationDialog extends StatelessWidget {
   const TaskCreationDialog({
     required TextEditingController controllerName,
     required TextEditingController controllerDescription,
     required Box habits,
   })  : _controllerName = controllerName,
-        _controllerDescription = controllerDescription,
-        _habits = habits;
+        _controllerDescription = controllerDescription;
 
   final TextEditingController _controllerName;
   final TextEditingController _controllerDescription;
-  final Box _habits;
 
-  @override
-  State<TaskCreationDialog> createState() => _TaskCreationDialogState();
-}
-
-class _TaskCreationDialogState extends State<TaskCreationDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       content: Column(
         children: [
           TextField(
-            controller: widget._controllerName,
+            controller: _controllerName,
             decoration:
                 InputDecoration(fillColor: Colors.grey[100], filled: true),
           ),
           TextField(
-            controller: widget._controllerDescription,
+            controller: _controllerDescription,
             decoration:
                 InputDecoration(fillColor: Colors.grey[100], filled: true),
           ),
           IconButton(
             onPressed: () {
-              setState(() {
-                HabitsDatabase().pushNewTask(widget._controllerName.text,
-                    widget._controllerDescription.text);
-              });
+              HabitsDatabase().pushNewTask(
+                  _controllerName.text, _controllerDescription.text);
+              _controllerName.clear();
+              _controllerDescription.clear();
             },
             icon: Icon(Icons.done_rounded),
           ),
