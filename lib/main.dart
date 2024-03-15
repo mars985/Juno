@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:juno/data/databasehabits.dart';
+import 'package:juno/models/habit_widgets.dart';
 import 'package:juno/models/my_drawer.dart';
 import 'package:juno/pages/habit_page.dart';
 import 'package:juno/pages/home_page.dart';
@@ -10,10 +11,10 @@ import 'package:juno/pages/people_page.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
-  // WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
   Hive.init("C:/Users/Admin/Documents/");
   final _habits = await Hive.openBox("habits");
-  runApp(MyApp());
+  runApp(MaterialApp(home: MyApp()));
 }
 
 class MyApp extends StatefulWidget {
@@ -37,6 +38,9 @@ class _MyAppState extends State<MyApp> {
   var _pageSelected = 2;
   final _habits = Hive.box("habits");
 
+  final _controllerName = TextEditingController();
+  final _controllerDescription = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -55,6 +59,20 @@ class _MyAppState extends State<MyApp> {
               setState(() {
                 _pageSelected = index;
               });
+            },
+          ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return TaskCreationDialog(
+                    controllerName: _controllerName,
+                    controllerDescription: _controllerDescription,
+                    habits: _habits,
+                  );
+                },
+              );
             },
           ),
         ),

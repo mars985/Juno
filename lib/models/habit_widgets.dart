@@ -124,7 +124,7 @@ class MyHeatMap extends StatelessWidget {
   }
 }
 
-class TaskCreationDialog extends StatelessWidget {
+class TaskCreationDialog extends StatefulWidget {
   const TaskCreationDialog({
     required TextEditingController controllerName,
     required TextEditingController controllerDescription,
@@ -136,26 +136,32 @@ class TaskCreationDialog extends StatelessWidget {
   final TextEditingController _controllerDescription;
 
   @override
+  State<TaskCreationDialog> createState() => _TaskCreationDialogState();
+}
+
+class _TaskCreationDialogState extends State<TaskCreationDialog> {
+  @override
   Widget build(BuildContext context) {
     return AlertDialog(
       content: Column(
         children: [
           TextField(
-            controller: _controllerName,
+            controller: widget._controllerName,
             decoration:
                 InputDecoration(fillColor: Colors.grey[100], filled: true),
           ),
           TextField(
-            controller: _controllerDescription,
+            controller: widget._controllerDescription,
             decoration:
                 InputDecoration(fillColor: Colors.grey[100], filled: true),
           ),
           IconButton(
             onPressed: () {
-              HabitsDatabase().pushNewTask(
-                  _controllerName.text, _controllerDescription.text);
-              _controllerName.clear();
-              _controllerDescription.clear();
+              HabitsDatabase().pushNewTask(widget._controllerName.text,
+                  widget._controllerDescription.text);
+              widget._controllerName.clear();
+              widget._controllerDescription.clear();
+              Navigator.pop(context);
             },
             icon: Icon(Icons.done_rounded),
           ),
