@@ -83,7 +83,8 @@ class InfoBar extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Heading(text: habitsDatabase.getTaskAt(index)["taskname"]),
-                  Subtitle(text: habitsDatabase.getTaskAt(index)["description"]),
+                  Subtitle(
+                      text: habitsDatabase.getTaskAt(index)["description"]),
                 ],
               ),
             )
@@ -122,39 +123,37 @@ class MyHeatMap extends StatelessWidget {
   }
 }
 
-class TaskCreationDialog extends StatefulWidget {
+class TaskCreationDialog extends StatelessWidget {
   TaskCreationDialog({
-    required Box habits,
+    required this.habitsDatabase,
   });
+
+  final HabitsDatabase habitsDatabase;
   final _controllerDescription = TextEditingController();
   final _controllerName = TextEditingController();
 
-  @override
-  State<TaskCreationDialog> createState() => _TaskCreationDialogState();
-}
-
-class _TaskCreationDialogState extends State<TaskCreationDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       content: Column(
         children: [
           TextField(
-            controller: widget._controllerName,
+            controller: _controllerName,
             decoration:
                 InputDecoration(fillColor: Colors.grey[100], filled: true),
           ),
           TextField(
-            controller: widget._controllerDescription,
+            controller: _controllerDescription,
             decoration:
                 InputDecoration(fillColor: Colors.grey[100], filled: true),
           ),
           IconButton(
             onPressed: () {
-              HabitsDatabase().pushNewTask(widget._controllerName.text,
-                  widget._controllerDescription.text);
-              widget._controllerName.clear();
-              widget._controllerDescription.clear();
+              habitsDatabase.pushNewTask(
+                  _controllerName.text, _controllerDescription.text);
+              _controllerName.clear();
+              _controllerDescription.clear();
+
               Navigator.pop(context);
             },
             icon: Icon(Icons.done_rounded),

@@ -14,45 +14,39 @@ class HabitPage extends StatefulWidget {
 }
 
 class _HabitPageState extends State<HabitPage> {
-  final _habits = Hive.box("habits");
-
-  final hdb = HabitsDatabase();
-
-  final _controllerName = TextEditingController();
-
-  final _controllerDescription = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(),
-      body: Builder(
-        builder: (context) {
-          var habitsDatabase =
-              Provider.of<HabitsDatabase>(context, listen: true);
-          return ListView.builder(
-            itemCount: habitsDatabase.getLength(),
-            shrinkWrap: true,
-            scrollDirection: Axis.vertical,
-            padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
-            itemBuilder: (context, index) {
-              return MyTile(index: index, habitsDatabase: habitsDatabase);
-            },
-          );
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (context) {
-              return TaskCreationDialog(
-                habits: _habits,
-              );
-            },
-          );
-        },
-      ),
-    );
+    return Builder(builder: (context) {
+      var habitsDatabase = Provider.of<HabitsDatabase>(context, listen: true);
+      return Scaffold(
+        appBar: AppBar(),
+        body: Builder(
+          builder: (context) {
+            return ListView.builder(
+              itemCount: habitsDatabase.getLength(),
+              shrinkWrap: true,
+              scrollDirection: Axis.vertical,
+              padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
+              itemBuilder: (context, index) {
+                return MyTile(index: index, habitsDatabase: habitsDatabase);
+              },
+            );
+          },
+        ),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add_rounded),
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return TaskCreationDialog(
+                  habitsDatabase: habitsDatabase,
+                );
+              },
+            );
+          },
+        ),
+      );
+    });
   }
 }
