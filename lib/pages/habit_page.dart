@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:juno/data/databasehabits.dart';
 import 'package:juno/models/habit_widgets.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +18,6 @@ class _HabitPageState extends State<HabitPage> {
     return Builder(builder: (context) {
       var habitsDatabase = Provider.of<HabitsDatabase>(context, listen: true);
       return Scaffold(
-        appBar: AppBar(),
         body: Builder(
           builder: (context) {
             return ListView.builder(

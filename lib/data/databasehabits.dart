@@ -42,7 +42,7 @@ class HabitsDatabase extends ChangeNotifier {
     return taskData["dataset"][date];
   }
 
-  void updateDataset(String taskname, DateTime date, int count) {
+  void putDayData(String taskname, DateTime date, int count) {
     var taskData = getTask(taskname);
     var putDataset = taskData["dataset"];
     putDataset[date] = count;
@@ -54,4 +54,6 @@ class HabitsDatabase extends ChangeNotifier {
     };
     _habits.put(taskname, putData);
   }
+
+  
 }

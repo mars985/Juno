@@ -1,7 +1,6 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_constructors_in_immutables, prefer_const_literals_to_create_immutables, use_key_in_widget_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_constructors_in_immutables, prefer_const_literals_to_create_immutables, use_key_in_widget_constructors, sort_child_properties_last
 
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:juno/data/databasehabits.dart';
 import 'package:juno/heatmap/src/heatmap.dart';
 
@@ -66,12 +65,16 @@ class InfoBar extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            IconContainer(
-              icon: Icon(Icons.monitor_heart_rounded),
-              onTap: () {},
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: IconContainer(
+                icon: Icon(Icons.monitor_heart_rounded),
+                onTap: () {},
+              ),
             ),
-            IconContainer(
-              icon: Icon(Icons.delete),
+            MyButton(
+              child: Icon(Icons.delete),
+              splashColor: Colors.red,
               onTap: () {
                 habitsDatabase.deleteTaskAt(index);
               },
@@ -90,9 +93,15 @@ class InfoBar extends StatelessWidget {
             )
           ],
         ),
-        IconContainer(
-          icon: Icon(Icons.add_rounded),
-          onTap: () {},
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: MyButton(
+            onTap: () {
+              print("pressed");
+            },
+            child: Icon(Icons.add_rounded),
+            splashColor: Colors.blueAccent,
+          ),
         ),
       ],
     );
@@ -132,40 +141,49 @@ class TaskCreationDialog extends StatelessWidget {
   final _controllerDescription = TextEditingController();
   final _controllerName = TextEditingController();
 
+  void submitTask(BuildContext context) {
+    habitsDatabase.pushNewTask(
+        _controllerName.text, _controllerDescription.text);
+    _controllerName.clear();
+    _controllerDescription.clear();
+
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      content: Column(
-        children: [
-          TextField(
-            controller: _controllerName,
-            decoration:
-                InputDecoration(fillColor: Colors.grey[100], filled: true),
-          ),
-          TextField(
-            controller: _controllerDescription,
-            decoration:
-                InputDecoration(fillColor: Colors.grey[100], filled: true),
-          ),
-          IconButton(
-            onPressed: () {
-              habitsDatabase.pushNewTask(
-                  _controllerName.text, _controllerDescription.text);
-              _controllerName.clear();
-              _controllerDescription.clear();
-
-              Navigator.pop(context);
-            },
-            icon: Icon(Icons.done_rounded),
-          ),
-        ],
+      content: Container(
+        height: 300,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextField(
+              controller: _controllerName,
+              autofocus: true,
+              decoration:
+                  InputDecoration(fillColor: Colors.grey[100], filled: true),
+            ),
+            TextField(
+              controller: _controllerDescription,
+              onEditingComplete: () => submitTask(context),
+              decoration:
+                  InputDecoration(fillColor: Colors.grey[100], filled: true),
+            ),
+            SizedBox(height: 10),
+            IconButton(
+              onPressed: () => submitTask(context),
+              icon: Icon(Icons.done_rounded),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
 
 class IconContainer extends StatelessWidget {
-  const IconContainer({
+  IconContainer({
     super.key,
     required this.icon,
     required this.onTap,
@@ -178,17 +196,83 @@ class IconContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Container(
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(4),
-            color: Colors.grey[350],
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(4),
+          color: Colors.grey[350],
+        ),
+        child: icon,
+      ),
+    );
+  }
+}
+
+class MyButton extends StatelessWidget {
+  MyButton({
+    super.key,
+    required this.onTap,
+    required this.child,
+    required this.splashColor,
+  });
+
+  final VoidCallback? onTap;
+  final Widget child;
+  final Color splashColor;
+
+  bool _pressed = false;
+  // final ButtonStyle _buttonStyle = ButtonStyle(
+  @override
+  Widget build(BuildContext context) {
+    // return ElevatedButton(
+    //   onPressed: onTap,
+    //   style: _buttonStyle,
+    //   child: child,
+    // );
+    return Material(
+      borderRadius: BorderRadius.circular(4),
+      child: InkWell(
+        splashColor: splashColor,
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(4),
+        child: Center(
+          child: Container(
+            height: 48,
+            width: 48,
+            child: child,
           ),
-          child: icon,
         ),
       ),
     );
+    // return GestureDetector(
+    //   onTapDown: (_) {
+    //     setState(() {
+    //       widget._pressed = true;
+    //     });
+    //   },
+    //   onTapUp: (_) {
+    //     setState(() {
+    //       widget._pressed = false;
+    //     });
+    //     widget.onTap!();
+    //   },
+    //   onTapCancel: () {
+    //     setState(() {
+    //       widget._pressed = false;
+    //     });
+    //   },
+    //   child: AnimatedContainer(
+    //     duration: Duration(milliseconds: 100),
+    //     height: widget._pressed ? 48 : 48,
+    //     width: widget._pressed ? 48 : 48,
+    //     decoration: BoxDecoration(
+    //       borderRadius: BorderRadius.circular(4),
+    //       color: widget._pressed ? Colors.grey[200] : Colors.grey[100],
+    //     ),
+    //     child: Center(
+    //       child: widget.child,
+    //     ),
+    //   ),
+    // );
   }
 }
