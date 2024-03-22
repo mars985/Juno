@@ -11,10 +11,10 @@ class NavBar extends StatefulWidget {
 
 class _NavBarState extends State<NavBar> {
   var themePicked = 0;
-  Themes theme = Themes();
+  MyThemes theme = MyThemes();
   getColor(paletteName) {
     // return theme.colorPalette[themePicked][index];
-    return Color(theme.colors[themePicked][paletteName]);
+    // return Color(theme.colors[themePicked][paletteName]);
   }
 
   var _selectedIndex = 0;

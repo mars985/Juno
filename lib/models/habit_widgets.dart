@@ -1,13 +1,14 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_constructors_in_immutables, prefer_const_literals_to_create_immutables, use_key_in_widget_constructors, sort_child_properties_last
+// ignore_for_file: prefer_const_constructors, prefer_const_constructors_in_immutables, prefer_const_literals_to_create_immutables, use_key_in_widget_constructors, sort_child_properties_last, sized_box_for_whitespace
 
 import 'package:flutter/material.dart';
 import 'package:juno/data/databasehabits.dart';
+import 'package:juno/data/theme.dart';
 import 'package:juno/heatmap/src/heatmap.dart';
 
 import 'text_widgets.dart';
 
 class MyTile extends StatelessWidget {
-  const MyTile({
+  MyTile({
     super.key,
     required this.index,
     required this.habitsDatabase,
@@ -15,15 +16,16 @@ class MyTile extends StatelessWidget {
 
   final HabitsDatabase habitsDatabase;
   final int index;
+  final _myThemes = MyThemes().lightTheme;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(0, 4, 0, 4),
+      padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4),
-          color: Colors.grey[500],
+          color: _myThemes.backgroundAccent,
         ),
         child: Column(
           children: [
@@ -56,6 +58,7 @@ class InfoBar extends StatelessWidget {
 
   final int index;
   final habitsDatabase;
+  final _myThemes = MyThemes().lightTheme;
 
   @override
   Widget build(BuildContext context) {
@@ -66,9 +69,13 @@ class InfoBar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              // padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+              padding: EdgeInsets.all(8),
               child: IconContainer(
-                icon: Icon(Icons.monitor_heart_rounded),
+                icon: Icon(
+                  Icons.monitor_heart_rounded,
+                  color: _myThemes.background,
+                ),
                 onTap: () {},
               ),
             ),
@@ -80,7 +87,7 @@ class InfoBar extends StatelessWidget {
               },
             ),
             Padding(
-              padding: EdgeInsets.fromLTRB(8, 0, 0, 0),
+              padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -100,7 +107,7 @@ class InfoBar extends StatelessWidget {
               print("pressed");
             },
             child: Icon(Icons.add_rounded),
-            splashColor: Colors.blueAccent,
+            splashColor: _myThemes.primary,
           ),
         ),
       ],
@@ -110,7 +117,9 @@ class InfoBar extends StatelessWidget {
 
 class MyHeatMap extends StatelessWidget {
   MyHeatMap({super.key, required this.dataMap});
+
   final Map<DateTime, int> dataMap;
+  final _myTheme = MyThemes().lightTheme;
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +130,7 @@ class MyHeatMap extends StatelessWidget {
         scrollable: true,
         endDate: DateTime.now(),
         datasets: dataMap,
-        defaultColor: Colors.grey[600],
+        defaultColor: _myTheme.secondary,
         colorsets: {0: Colors.red},
         size: 10,
         showText: false,
@@ -191,6 +200,7 @@ class IconContainer extends StatelessWidget {
 
   final Icon icon;
   final void Function() onTap;
+  final _myTheme = MyThemes().lightTheme;
 
   @override
   Widget build(BuildContext context) {
@@ -200,7 +210,7 @@ class IconContainer extends StatelessWidget {
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4),
-          color: Colors.grey[350],
+          color: _myTheme.primary,
         ),
         child: icon,
       ),
@@ -220,59 +230,25 @@ class MyButton extends StatelessWidget {
   final Widget child;
   final Color splashColor;
 
-  bool _pressed = false;
-  // final ButtonStyle _buttonStyle = ButtonStyle(
+  final _myThemes = MyThemes().lightTheme;
+
   @override
   Widget build(BuildContext context) {
-    // return ElevatedButton(
-    //   onPressed: onTap,
-    //   style: _buttonStyle,
-    //   child: child,
-    // );
     return Material(
       borderRadius: BorderRadius.circular(4),
       child: InkWell(
         splashColor: splashColor,
+        // overlayColor: MaterialStatePropertyAll(_myThemes.accent),
+        // hoverColor: _myThemes.accent,
+        // hoverColor: _myThemes.primary,
         onTap: onTap,
         borderRadius: BorderRadius.circular(4),
-        child: Center(
-          child: Container(
-            height: 48,
-            width: 48,
-            child: child,
-          ),
+        child: Container(
+          height: 48,
+          width: 48,
+          child: child,
         ),
       ),
     );
-    // return GestureDetector(
-    //   onTapDown: (_) {
-    //     setState(() {
-    //       widget._pressed = true;
-    //     });
-    //   },
-    //   onTapUp: (_) {
-    //     setState(() {
-    //       widget._pressed = false;
-    //     });
-    //     widget.onTap!();
-    //   },
-    //   onTapCancel: () {
-    //     setState(() {
-    //       widget._pressed = false;
-    //     });
-    //   },
-    //   child: AnimatedContainer(
-    //     duration: Duration(milliseconds: 100),
-    //     height: widget._pressed ? 48 : 48,
-    //     width: widget._pressed ? 48 : 48,
-    //     decoration: BoxDecoration(
-    //       borderRadius: BorderRadius.circular(4),
-    //       color: widget._pressed ? Colors.grey[200] : Colors.grey[100],
-    //     ),
-    //     child: Center(
-    //       child: widget.child,
-    //     ),
-    //   ),
-    // );
   }
 }

@@ -24,7 +24,7 @@ class _HabitPageState extends State<HabitPage> {
               itemCount: habitsDatabase.getLength(),
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
-              padding: const EdgeInsets.fromLTRB(8, 4, 8, 4),
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
               itemBuilder: (context, index) {
                 return MyTile(index: index, habitsDatabase: habitsDatabase);
               },

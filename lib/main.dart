@@ -3,11 +3,13 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:juno/data/databasehabits.dart';
+import 'package:juno/data/theme.dart';
 import 'package:juno/models/habit_widgets.dart';
 import 'package:juno/models/my_drawer.dart';
 import 'package:juno/pages/habit_page.dart';
 import 'package:juno/pages/home_page.dart';
 import 'package:juno/pages/people_page.dart';
+import 'package:juno/pages/task_edit_page.dart';
 import 'package:juno/pages/task_page.dart';
 import 'package:provider/provider.dart';
 import 'package:path_provider/path_provider.dart';
@@ -35,14 +37,17 @@ class _MyAppState extends State<MyApp> {
     PeoplePage(),
     HabitPage(),
     TaskPage(),
+    TaskEditPage(),
   ];
   final List<String> _pageAppBar = [
     "Expenses",
     "Expenses",
     "Habits",
     "Task",
+    "Task Edit"
   ];
-  var _pageSelected = 3;
+  var _pageSelected = 2;
+  final _myTheme = MyThemes().lightTheme;
 
   @override
   Widget build(BuildContext context) {
@@ -51,10 +56,10 @@ class _MyAppState extends State<MyApp> {
       child: MaterialApp(
         title: 'Juno',
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(useMaterial3: true, primarySwatch: Colors.grey),
+        // theme: ThemeData(useMaterial3: true, primarySwatch: Colors.grey),
         home: Scaffold(
           resizeToAvoidBottomInset: false,
-          backgroundColor: Colors.grey[400],
+          backgroundColor: _myTheme.background,
           appBar: AppBar(title: Text(_pageAppBar[_pageSelected])),
           body: _pages[_pageSelected],
           // body: MyButton(onTap: () {}, child: Icon(Icons.abc)),

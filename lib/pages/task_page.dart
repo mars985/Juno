@@ -118,13 +118,22 @@ class TaskInfoBar3 extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(Icons.calendar_month_rounded),
-        SizedBox(width: 20),
-        Icon(Icons.edit_rounded),
-        SizedBox(width: 20),
-        Icon(Icons.delete_rounded),
-        SizedBox(width: 20),
-        Icon(Icons.share_rounded),
+        IconButton(
+          onPressed: () {},
+          icon: Icon(Icons.calendar_month_rounded),
+        ),
+        IconButton(
+          onPressed: () {},
+          icon: Icon(Icons.edit_rounded),
+        ),
+        IconButton(
+          onPressed: () {},
+          icon: Icon(Icons.delete_rounded),
+        ),
+        IconButton(
+          onPressed: () {},
+          icon: Icon(Icons.share_rounded),
+        ),
       ],
     );
   }
