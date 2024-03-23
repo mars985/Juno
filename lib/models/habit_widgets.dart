@@ -4,50 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:juno/data/databasehabits.dart';
 import 'package:juno/data/theme.dart';
 import 'package:juno/heatmap/src/heatmap.dart';
-
+import 'package:juno/models/habit_dialogs.dart';
 import 'text_widgets.dart';
-
-class MyTile extends StatelessWidget {
-  MyTile({
-    super.key,
-    required this.index,
-    required this.habitsDatabase,
-  });
-
-  final HabitsDatabase habitsDatabase;
-  final int index;
-  final _myThemes = MyThemes().lightTheme;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(4),
-          color: _myThemes.backgroundAccent,
-        ),
-        child: Column(
-          children: [
-            InfoBar(
-              index: index,
-              habitsDatabase: habitsDatabase,
-            ),
-            MyHeatMap(
-              dataMap: {
-                DateTime(2024, 03, 01): 1,
-                DateTime(2024, 03, 02): 2,
-                DateTime(2024, 03, 03): 3,
-                DateTime(2024, 03, 04): 4,
-                DateTime(2024, 03, 05): 5,
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
 
 class InfoBar extends StatelessWidget {
   InfoBar({
@@ -104,7 +62,11 @@ class InfoBar extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: MyButton(
             onTap: () {
-              print("pressed");
+              // print("pressed");
+              showDialog(context: context, builder: (context) {
+                return DoTaskDialog();
+                // return CustomTimePickerDialog();
+              },);
             },
             child: Icon(Icons.add_rounded),
             splashColor: _myThemes.primary,
@@ -131,61 +93,12 @@ class MyHeatMap extends StatelessWidget {
         endDate: DateTime.now(),
         datasets: dataMap,
         defaultColor: _myTheme.secondary,
-        colorsets: {0: Colors.red},
+        // defaultColor: Colors.grey[200],
+        colorsets: {0: _myTheme.accent},
         size: 10,
         showText: false,
         borderRadius: 2,
         showColorTip: false,
-      ),
-    );
-  }
-}
-
-class TaskCreationDialog extends StatelessWidget {
-  TaskCreationDialog({
-    required this.habitsDatabase,
-  });
-
-  final HabitsDatabase habitsDatabase;
-  final _controllerDescription = TextEditingController();
-  final _controllerName = TextEditingController();
-
-  void submitTask(BuildContext context) {
-    habitsDatabase.pushNewTask(
-        _controllerName.text, _controllerDescription.text);
-    _controllerName.clear();
-    _controllerDescription.clear();
-
-    Navigator.pop(context);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      content: Container(
-        height: 300,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextField(
-              controller: _controllerName,
-              autofocus: true,
-              decoration:
-                  InputDecoration(fillColor: Colors.grey[100], filled: true),
-            ),
-            TextField(
-              controller: _controllerDescription,
-              onEditingComplete: () => submitTask(context),
-              decoration:
-                  InputDecoration(fillColor: Colors.grey[100], filled: true),
-            ),
-            SizedBox(height: 10),
-            IconButton(
-              onPressed: () => submitTask(context),
-              icon: Icon(Icons.done_rounded),
-            ),
-          ],
-        ),
       ),
     );
   }

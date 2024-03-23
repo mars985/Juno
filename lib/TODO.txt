@@ -79,11 +79,49 @@ box = [
     task 3,
 ]
 
-task = {
+task = (
     "taskname": taskname
     "description": String
     "dataset": Map<DateTime, int>
-}
+)
 
 ====== 2024-03-15_10.04.16 ======
 
+====== 2024-03-23_16.20.18 ======
+
+- timepicker to pick duration of task
+
+- plug duration directly into heatmap
+
+dataset = (
+    day1: int duration in minutes
+)
+
+- converter funcs
+
+int TimeOfDay2Min(TimeOfDay duration) 
+TimeOfDay Min2TimeOfDay(int duration)
+
+- so two types of tasks: "incremental" and "timebased"
+- for example, push-ups: 10, art: 70 (1hr 10min)
+
+task = (
+    //...
+    type: String 
+)
+
+if (type == "incremental")
+    increment button
+else if (type == "timebased")
+    showTimePicker button
+
+- mydialogbox(children: [showTimePicker,checkbox])
+- checkbox ? cumulative add existing duration in database with new duration : new duration
+
+
+
+-- future plans
+
+- alternative to heatmap, bar graphs, long press MyTile to swap
+- icon library for tasks
+- 

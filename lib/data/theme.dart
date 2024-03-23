@@ -40,10 +40,19 @@ import 'package:flutter/material.dart';
 // }
 
 class MyThemes {
+  // final lightTheme = (
+  //   primary: Color(),
+  //   secondary: Color(),
+  //   secondary2: Color(),
+  //   accent: Color(),
+  //   background: Color(),
+  //   backgroundAccent: Color(),
+  //   text: Color(),
+  // );
   final lightTheme = (
     primary: Color(0xFF63719E),
     secondary: Color(0xFFCAAAB7),
-    accent: Color(0xFFB59388),
+    accent: Color(0xFF03045E),
     background: Color(0xFFF4F5F8),
     backgroundAccent: Color(0xFFE7DEE4),
     text: Color(0xFF110C0E),

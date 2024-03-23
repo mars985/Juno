@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:juno/data/databasehabits.dart';
+import 'package:juno/data/theme.dart';
+import 'package:juno/models/habit_dialogs.dart';
 import 'package:juno/models/habit_widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -46,5 +48,52 @@ class _HabitPageState extends State<HabitPage> {
         ),
       );
     });
+  }
+}
+
+class MyTile extends StatelessWidget {
+  MyTile({
+    super.key,
+    required this.index,
+    required this.habitsDatabase,
+  });
+
+  final HabitsDatabase habitsDatabase;
+  final int index;
+  final _myThemes = MyThemes().lightTheme;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(4),
+          color: _myThemes.backgroundAccent,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            InfoBar(
+              index: index,
+              habitsDatabase: habitsDatabase,
+            ),
+            MyHeatMap(
+              dataMap: {
+                DateTime(2024, 03, 01): 1,
+                DateTime(2024, 03, 02): 2,
+                DateTime(2024, 03, 03): 3,
+                DateTime(2024, 03, 04): 4,
+                DateTime(2024, 03, 05): 5,
+              },
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text("count: 100"),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
