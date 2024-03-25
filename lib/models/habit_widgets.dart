@@ -15,7 +15,7 @@ class InfoBar extends StatelessWidget {
   });
 
   final int index;
-  final habitsDatabase;
+  final HabitsDatabase habitsDatabase;
   final _myThemes = MyThemes().lightTheme;
 
   @override
@@ -44,6 +44,18 @@ class InfoBar extends StatelessWidget {
                 habitsDatabase.deleteTaskAt(index);
               },
             ),
+
+            // debugger
+
+            MyButton(
+              onTap: () {
+                // habitsDatabase.getDatasetAt(index);
+                print(habitsDatabase.formatToday());
+              },
+              child: Icon(Icons.bug_report_rounded),
+              splashColor: Colors.green,
+            ),
+
             Padding(
               padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
               child: Column(
@@ -62,11 +74,17 @@ class InfoBar extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: MyButton(
             onTap: () {
-              // print("pressed");
-              showDialog(context: context, builder: (context) {
-                return DoTaskDialog();
-                // return CustomTimePickerDialog();
-              },);
+              showDialog(
+                context: context,
+                builder: (context) {
+                  // return DoTaskDialog();
+                  // return CustomTimePickerDialog();
+                  return DoTaskDialog(
+                    habitsDatabase: habitsDatabase,
+                    taskname: habitsDatabase.getTaskname(index),
+                  );
+                },
+              );
             },
             child: Icon(Icons.add_rounded),
             splashColor: _myThemes.primary,
