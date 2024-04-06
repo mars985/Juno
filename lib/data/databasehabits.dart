@@ -33,9 +33,6 @@ class HabitsDatabase extends ChangeNotifier {
     var taskData = getTaskAt(index);
     var returnData = taskData["dataset"][date];
 
-    if (kDebugMode) {
-      print("getDayDataAt():\t$returnData");
-    }
     return returnData ?? 999;
   }
 
@@ -75,11 +72,6 @@ class HabitsDatabase extends ChangeNotifier {
 
     _habits.putAt(index, putTask);
     notifyListeners();
-
-    if (kDebugMode) {
-      var x = getDayDataAt(index, date);
-      print("put $x");
-    }
   }
 
   void putTodayDataAt(int index, int count) {
@@ -88,25 +80,25 @@ class HabitsDatabase extends ChangeNotifier {
       DateTime.now().month,
       DateTime.now().day,
     );
-    var date2 = DateFormat("yyyy-mm-dd").format(date);
+    var date2 = DateFormat("yyyy-MM-dd").format(date);
     putDayDataAt(index, date2, count);
   }
 
   Map<String, int> getDatasetAt(int index) {
-    final Map<String, int> datasetString = getTaskAt(index)["dataset"];
-    // final Map<String, int> datasetString = {};
-    // Map<String, int> returnData = {};
-    // datasetString.forEach((key, value) {
-    //   returnData[key] = value;
-    // });
-
+    Map<String, int> datasetString = <String, int>{};
+    var temp = getTaskAt(index)["dataset"];
+    temp.forEach(
+      (key, value) {
+        if (key is String && value is int) datasetString[key] = value;
+      },
+    );
     return datasetString;
   }
 
   // converter funcs
 
   Map<DateTime, int> String2DateTime(Map<String, int> datasetString) {
-    Map<DateTime, int> datasetDateTime = {};
+    Map<DateTime, int> datasetDateTime = <DateTime, int>{};
     DateTime newkey;
 
     datasetString.forEach((key, value) {
@@ -118,25 +110,16 @@ class HabitsDatabase extends ChangeNotifier {
   }
 
   Map<String, int> DateTime2String(Map<DateTime, int> datasetDateTime) {
-    Map<String, int> datasetString = {};
+    Map<String, int> datasetString = <String, int>{};
     String newkey;
 
     datasetDateTime.forEach((key, value) {
-      newkey = DateFormat("yyyy-mm-dd").format(key);
+      newkey = DateFormat("yyyy-MM-dd").format(key);
       datasetString[newkey] = value;
     });
 
     return datasetString;
   }
 
-  void debugger() {
-    var date = DateFormat("yyyy-mm-dd").format(DateTime(2024, 03, 28));
-    // putDayDataAt(0, date, 777);
-
-    var data = getDayDataAt(0, date);
-    print("DayData ${data}");
-
-    // print(getDatasetAt(0).runtimeType);
-    // print(date.toString());
-  }
+  void debugger() {}
 }
