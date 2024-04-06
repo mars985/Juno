@@ -56,12 +56,12 @@ class DoTaskDialog extends StatelessWidget {
   DoTaskDialog({
     super.key,
     required this.habitsDatabase,
-    required this.taskname,
+    required this.index,
   });
 
   final TextEditingController _textcontroller = TextEditingController();
   final HabitsDatabase habitsDatabase;
-  final String taskname;
+  final int index;
 
   void submitTask(BuildContext context) {
     _textcontroller.clear();
@@ -85,7 +85,9 @@ class DoTaskDialog extends StatelessWidget {
           ElevatedButton(
             onPressed: () {
               final count = int.parse(_textcontroller.text);
-              habitsDatabase.putTodayData(taskname, count);
+              print(count);
+              print(count.runtimeType);
+              habitsDatabase.putTodayDataAt(index, count);
               Navigator.pop(context);
             },
             child: Text("submit"),

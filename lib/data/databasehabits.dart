@@ -12,18 +12,9 @@ class HabitsDatabase extends ChangeNotifier {
   }
 
   String getTaskname(int index) {
-    var taskData = getTaskAt(index);
-    String taskname = taskData["taskname"];
+    String taskname = getTaskAt(index)["taskname"];
 
     return taskname;
-  }
-
-  DateTime formatToday() {
-    return DateTime(
-      DateTime.now().year,
-      DateTime.now().month,
-      DateTime.now().day,
-    );
   }
 
   void deleteTaskAt(int index) {
@@ -34,29 +25,19 @@ class HabitsDatabase extends ChangeNotifier {
 
   // GET DATA
 
-  getTask(String taskname) {
-    return _habits.get(taskname);
-  }
-
   getTaskAt(int index) {
     return _habits.getAt(index);
   }
 
-  int getDayData(String taskname, DateTime date) {
-    var taskData = getTask(taskname);
-    return taskData["dataset"][date.toString()] ?? 999;
-  }
-
-  int getDayDataAt(int index, DateTime date) {
+  int getDayDataAt(int index, String date) {
     var taskData = getTaskAt(index);
-    var returnData = taskData["dataset"][date.toString()];
-    print(returnData);
+    var returnData = taskData["dataset"][date];
+
+    if (kDebugMode) {
+      print("getDayDataAt():\t$returnData");
+    }
     return returnData ?? 999;
   }
-  // int getDayDataAt(int index, DateTime date) {
-  //   var taskname = getTaskname(index);
-  //   return getDayData(taskname, date);
-  // }
 
   // CREATE NEW TASK
 
@@ -65,11 +46,10 @@ class HabitsDatabase extends ChangeNotifier {
       return;
     }
 
-    Map<DateTime, int> initDataset = {formatToday(): 0};
     var putData = {
       "taskname": taskname.toString(),
       "description": description.toString(),
-      "dataset": initDataset,
+      "dataset": <String, int>{},
     };
     _habits.put(taskname.toString(), putData);
 
@@ -78,112 +58,52 @@ class HabitsDatabase extends ChangeNotifier {
 
   // UPDATE TASK DATA
 
-  void putDayData(String taskname, DateTime date, int count) {
-    var taskData = getTask(taskname);
-    var putDataset = taskData["dataset"];
-    putDataset[date.toString()] = count;
+  void putDayDataAt(int index, String date, int count) {
+    final task = getTaskAt(index);
+    var temp = task["dataset"];
 
-    var putData = {
-      "taskname": taskData["taskname"],
-      "description": taskData["description"],
-      "dataset": taskData,
+    Map<String, int> taskDataset = {};
+    if (temp.runtimeType == Map<String, int>) taskDataset = temp;
+
+    taskDataset[date] = count;
+
+    var putTask = {
+      "taskname": task["taskname"],
+      "description": task["description"],
+      "dataset": taskDataset,
     };
-    _habits.put(taskname, putData);
-    var x = getDayData(taskname, date);
-    print("put $x");
-  }
 
-  void putDayDataAt(int index, DateTime date, int count) {
-    String taskname = getTaskname(index);
-    print("Task name: $taskname");
-
-    putDayData(taskname, date, count);
-
+    _habits.putAt(index, putTask);
     notifyListeners();
+
+    if (kDebugMode) {
+      var x = getDayDataAt(index, date);
+      print("put $x");
+    }
   }
 
-  void putTodayData(String taskname, int count) {
-    final date = formatToday();
-    putDayData(taskname, date, count);
-  }
-
-  Map<DateTime, int> getDataset(String taskname) {
-    // Explicitly cast the fetched map to the desired type
-    var originaldataset = getTask(taskname)["dataset"];
-    Map<DateTime, int> dataset = {};
-    originaldataset.forEach((key, value) {
-      // Check if key is DateTime and value is int
-      if (key is DateTime && value is int) {
-        dataset[key] = value;
-      }
-    });
-    // print(originaldataset.runtimeType);
-    // print(dataset.runtimeType);
-    // print(dataset);
-    return dataset;
-  }
-
-  Map<DateTime, int> getDatasetAt(int index) {
-    String taskname = getTaskname(index);
-    Map<DateTime, int> dataset = getDataset(taskname);
-    dataset.forEach((key, value) {
-      // dataset[key] = value;
-      // print("$key $value");
-    });
-    // print(dataset);
-    return dataset;
-  }
-
-  void debugger() {
-    var date = DateTime(2024, 03, 28);
-    // putDayDataAt(0, date, 10);
-    // var data = getDayDataAt(0, date);
-    // print("DayData ${data}");
-    // print(getDatasetAt(0).runtimeType);
-    print(date.toString());
-  }
-}
-
-class HabitsDatabase2 extends ChangeNotifier {
-  final _habits = Hive.box("habits");
-
-  // ===== WORKING =====
-
-  int getLength() {
-    return _habits.length;
-  }
-
-  DateTime formatToday() {
-    return DateTime(
+  void putTodayDataAt(int index, int count) {
+    var date = DateTime(
       DateTime.now().year,
       DateTime.now().month,
       DateTime.now().day,
     );
+    var date2 = DateFormat("yyyy-mm-dd").format(date);
+    putDayDataAt(index, date2, count);
   }
 
-  void deleteTaskAt(int index) {
-    _habits.deleteAt(index);
+  Map<String, int> getDatasetAt(int index) {
+    final Map<String, int> datasetString = getTaskAt(index)["dataset"];
+    // final Map<String, int> datasetString = {};
+    // Map<String, int> returnData = {};
+    // datasetString.forEach((key, value) {
+    //   returnData[key] = value;
+    // });
 
-    notifyListeners();
+    return datasetString;
   }
 
-  // PROBABLY WORKING
-
-  getTaskAt(int index) {
-    return _habits.getAt(index);
-  }
-
-  // WORKING?
-
-  int getDayDataAt(int index, DateTime date) {
-    var taskData = getTaskAt(index);
-    var returnData = taskData["dataset"][date.toString()];
-    print(returnData);
-
-    return returnData ?? 999;
-  }
-
-  // NEW
+  // converter funcs
 
   Map<DateTime, int> String2DateTime(Map<String, int> datasetString) {
     Map<DateTime, int> datasetDateTime = {};
@@ -209,13 +129,14 @@ class HabitsDatabase2 extends ChangeNotifier {
     return datasetString;
   }
 
-  // getter
+  void debugger() {
+    var date = DateFormat("yyyy-mm-dd").format(DateTime(2024, 03, 28));
+    // putDayDataAt(0, date, 777);
 
-  Map<DateTime, int> getDatasetAt(int index) {
-    final Map<String, int> datasetString = {};
-    //get from box
+    var data = getDayDataAt(0, date);
+    print("DayData ${data}");
 
-    final Map<DateTime, int> datasetDateTime = String2DateTime(datasetString);
-    return datasetDateTime;
+    // print(getDatasetAt(0).runtimeType);
+    // print(date.toString());
   }
 }

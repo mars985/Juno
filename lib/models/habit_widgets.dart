@@ -47,6 +47,7 @@ class InfoBar extends StatelessWidget {
 
             // debugger
 
+            SizedBox(width: 8),
             MyButton(
               onTap: () {
                 // habitsDatabase.getDatasetAt(index);
@@ -83,7 +84,7 @@ class InfoBar extends StatelessWidget {
                   // return CustomTimePickerDialog();
                   return DoTaskDialog(
                     habitsDatabase: habitsDatabase,
-                    taskname: habitsDatabase.getTaskname(index),
+                    index: index,
                   );
                 },
               );
@@ -98,7 +99,10 @@ class InfoBar extends StatelessWidget {
 }
 
 class MyHeatMap extends StatelessWidget {
-  MyHeatMap({super.key, required this.dataMap});
+  MyHeatMap({
+    super.key,
+    required this.dataMap,
+  });
 
   final Map<DateTime, int> dataMap;
   final _myTheme = MyThemes().lightTheme;

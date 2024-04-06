@@ -88,7 +88,11 @@ class MyTile extends StatelessWidget {
             //   }, // TODO
             // ),
 
-            MyHeatMap(dataMap: habitsDatabase.getDatasetAt(index)),
+            MyHeatMap(
+              dataMap: habitsDatabase.String2DateTime(
+                habitsDatabase.getDatasetAt(index),
+              ),
+            ),
 
             // MyHeatMap(dataMap: {
             //   DateTime(
