@@ -88,15 +88,15 @@ class MyTile extends StatelessWidget {
             //   }, // TODO
             // ),
 
-            // MyHeatMap(dataMap: habitsDatabase.getDatasetAt(index)),
+            MyHeatMap(dataMap: habitsDatabase.getDatasetAt(index)),
 
-            MyHeatMap(dataMap: {
-              DateTime(
-                DateTime.now().year,
-                DateTime.now().month,
-                DateTime.now().day,
-              ): 10,
-            }),
+            // MyHeatMap(dataMap: {
+            //   DateTime(
+            //     DateTime.now().year,
+            //     DateTime.now().month,
+            //     DateTime.now().day,
+            //   ): 10,
+            // }),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text("count: 100"),

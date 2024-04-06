@@ -86,6 +86,7 @@ class DoTaskDialog extends StatelessWidget {
             onPressed: () {
               final count = int.parse(_textcontroller.text);
               habitsDatabase.putTodayData(taskname, count);
+              Navigator.pop(context);
             },
             child: Text("submit"),
           )

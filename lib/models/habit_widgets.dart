@@ -50,7 +50,9 @@ class InfoBar extends StatelessWidget {
             MyButton(
               onTap: () {
                 // habitsDatabase.getDatasetAt(index);
-                print(habitsDatabase.formatToday());
+                // print(habitsDatabase.formatToday());
+                // habitsDatabase.getDatasetAt(index);
+                habitsDatabase.debugger();
               },
               child: Icon(Icons.bug_report_rounded),
               splashColor: Colors.green,
@@ -67,7 +69,7 @@ class InfoBar extends StatelessWidget {
                       text: habitsDatabase.getTaskAt(index)["description"]),
                 ],
               ),
-            )
+            ),
           ],
         ),
         Padding(

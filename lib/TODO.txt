@@ -16,16 +16,16 @@ category 3
 - task 4
 
 day = [
-    category 1,
-    category 2,
-    category 3,
+	category 1,
+	category 2,
+	category 3,
 ]
 day = [
-    [
-        task 1
-    ],
-    category 2,
-    category 3,
+	[
+		task 1
+	],
+	category 2,
+	category 3,
 ]
 
 task
@@ -35,54 +35,54 @@ task
 - datetime time of completion
 
 day = [
-    [
-        [
-            string task name,
-            bool completed,
-            datetime deadline,
-            datetime time of completion,
-        ], // task
-    ], // category
-    category 2,
-    category 3,
+	[
+		[
+			string task name,
+			bool completed,
+			datetime deadline,
+			datetime time of completion,
+		], // task
+	], // category
+	category 2,
+	category 3,
 ]
 
 box = [
-    day 1,
-    day 2,
-    day 3,
+	day 1,
+	day 2,
+	day 3,
 ]
 
 if (new day)
-    pushNewDaytoBox()
+	pushNewDaytoBox()
 
 box = [
-    [
-        [
-            string task name,
-            bool completed,
-            datetime deadline,
-            datetime time of completion,
-        ], // task
-        category 2,
-        category 3,
-    ],
-    day 2,
-    day 3,
+	[
+		[
+			string task name,
+			bool completed,
+			datetime deadline,
+			datetime time of completion,
+		], // task
+		category 2,
+		category 3,
+	],
+	day 2,
+	day 3,
 ]
 
 ========= 2024-03-05_19.19.19 =========
 
 box = [
-    task 1,
-    task 2,
-    task 3,
+	task 1,
+	task 2,
+	task 3,
 ]
 
 task = (
-    "taskname": taskname
-    "description": String
-    "dataset": Map<DateTime, int>
+	"taskname": taskname
+	"description": String
+	"dataset": Map<DateTime, int>
 )
 
 ====== 2024-03-15_10.04.16 ======
@@ -94,7 +94,7 @@ task = (
 - plug duration directly into heatmap
 
 dataset = (
-    day1: int duration in minutes
+	day1: int duration in minutes
 )
 
 - converter funcs
@@ -106,14 +106,14 @@ TimeOfDay Min2TimeOfDay(int duration)
 - for example, push-ups: 10, art: 70 (1hr 10min)
 
 task = (
-    //...
-    type: String 
+	//...
+	type: String 
 )
 
 if (type == "incremental")
-    increment button
+	increment button
 else if (type == "timebased")
-    showTimePicker button
+	showTimePicker button
 
 - mydialogbox(children: [showTimePicker,checkbox])
 - checkbox ? cumulative add existing duration in database with new duration : new duration
@@ -125,3 +125,59 @@ else if (type == "timebased")
 - alternative to heatmap, bar graphs, long press MyTile to swap
 - icon library for tasks
 - 
+
+===== 2024-04-05_16.26.38 =====
+
+box = {
+	taskname : {
+		taskname: String
+		description: String
+		dataset: {
+			date: count
+		}
+	}
+}
+
+-- issue: 
+when retrieving from box, date is DateTime object, has weird formatting incompatible with heatmap.
+
+-- solutions:
+()	1.  when putting in box, format date to yyyy-mm-dd
+()	2.  when getting from box, format date
+(x)	3.	a.	convert date to yyyy-mm-dd string then put into box, so map is <String,int>
+		b.  when getting from box, convert dataset into Map<DateTime,int>
+
+
+-- solution:
+
+//converter funcs
+
+Map<DateTime,int> String2DateTime(datasetString) {
+	Map<DateTime,int> datasetDateTime;
+	
+	//convert each String key to DateTime
+	datasetString.forEach(
+		(key, value) {
+		}
+	);
+	
+	return datasetDateTime;
+}
+Map<String,int> DateTime2String(dataset) {
+	Map<String,int> datasetString;
+	
+	//convert each DateTime key to String
+	
+	return datasetString;
+}
+
+// getter
+
+Map<DateTime, int> getDatasetAt(int index) {
+	final Map<String,int> datasetString;
+	//get from box
+
+	final Map<DateTime,int> datasetDateTime = String2DateTime(datasetString)
+}
+
+2024-04-05_16.52.40
