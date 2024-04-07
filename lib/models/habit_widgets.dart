@@ -1,11 +1,10 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_constructors_in_immutables, prefer_const_literals_to_create_immutables, use_key_in_widget_constructors, sort_child_properties_last, sized_box_for_whitespace, use_build_context_synchronously, unused_local_variable
+// ignore_for_file: prefer_const_constructors, prefer_const_constructors_in_immutables, prefer_const_literals_to_create_immutables, use_key_in_widget_constructors, sort_child_properties_last, sized_box_for_whitespace
 
 import 'package:flutter/material.dart';
-import 'package:flutter_spinbox/material.dart';
-import 'package:intl/intl.dart';
 import 'package:juno/data/databasehabits.dart';
 import 'package:juno/data/theme.dart';
 import 'package:juno/heatmap/src/heatmap.dart';
+import 'package:juno/models/habit_dialogs.dart';
 import 'text_widgets.dart';
 
 class InfoBar extends StatelessWidget {
@@ -17,7 +16,6 @@ class InfoBar extends StatelessWidget {
 
   final int index;
   final HabitsDatabase habitsDatabase;
-
   final _myThemes = MyThemes().lightTheme;
 
   @override
@@ -78,80 +76,24 @@ class InfoBar extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: MyButton(
-            onTap: () => DoTask(context, index, habitsDatabase),
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  // return DoTaskDialog();
+                  // return CustomTimePickerDialog();
+                  return DoTaskDialog(
+                    habitsDatabase: habitsDatabase,
+                    index: index,
+                  );
+                },
+              );
+            },
             child: Icon(Icons.add_rounded),
             splashColor: _myThemes.primary,
           ),
         ),
       ],
-    );
-  }
-
-  void DoTask(
-      BuildContext context, int index, HabitsDatabase habitsDatabase) async {
-    DateTime? pickedDate = await _selectDate(context);
-    var _value = 0;
-    if (pickedDate != null) {
-      DateTime dateDT = pickedDate;
-      String date = DateFormat("yyyy-MM-dd").format(dateDT);
-      print("picked date:\t$dateDT");
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            content: Material(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SpinBox(
-                      autofocus: true,
-                      value:
-                          habitsDatabase.getDayDataAt(index, date).toDouble(),
-                      min: 0,
-                      max: 500,
-                      onChanged: (value) => _value = value.toInt(),
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
-                        child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: Text("Cancel")),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
-                        child: ElevatedButton(
-                          onPressed: () {
-                            habitsDatabase.putDayDataAt(index, date, _value);
-                            Navigator.pop(context);
-                          },
-                          child: Text("Submit"),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-      );
-    }
-  }
-
-  Future<DateTime?> _selectDate(BuildContext context) async {
-    return await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime.now().subtract(Duration(days: 365)),
-      lastDate: DateTime.now(),
     );
   }
 }
