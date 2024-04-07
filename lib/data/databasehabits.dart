@@ -33,7 +33,7 @@ class HabitsDatabase extends ChangeNotifier {
     var taskData = getTaskAt(index);
     var returnData = taskData["dataset"][date];
 
-    return returnData ?? 999;
+    return returnData ?? 0;
   }
 
   // CREATE NEW TASK
@@ -57,10 +57,15 @@ class HabitsDatabase extends ChangeNotifier {
 
   void putDayDataAt(int index, String date, int count) {
     final task = getTaskAt(index);
-    var temp = task["dataset"];
+    Map temp = task["dataset"];
 
     Map<String, int> taskDataset = {};
-    if (temp.runtimeType == Map<String, int>) taskDataset = temp;
+    temp.forEach((key, value) {
+      if (key is String && value is int)
+      taskDataset[key]=value;
+    });
+    // print(temp.runtimeType);
+    print(taskDataset);
 
     taskDataset[date] = count;
 
@@ -121,5 +126,8 @@ class HabitsDatabase extends ChangeNotifier {
     return datasetString;
   }
 
-  void debugger() {}
+  void debugger() {
+    putDayDataAt(1, "2024-03-20", 10);
+    putTodayDataAt(1, 15);
+  }
 }
